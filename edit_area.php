@@ -37,7 +37,7 @@ if (isset($_POST['update'])) {
         if ($result && $db->affected_rows() === 1) {
             //sucess
             $session->msg('s', "Área ha actualizada! ");
-			insertAccion($user['id_user'], '"' . $user['username'] . '" editó el area ID('.$e_area['id_area'].') quedando "'.{$name}.'".', 2);
+			insertAccion($user['id_user'], '"' . $user['username'] . '" editó el area ID('.$e_area['id_area'].') quedando "'.$name.'".', 2);
             redirect('edit_area.php?id=' . (int)$e_area['id_area'], false);
         } else {
             //failed

@@ -38,7 +38,7 @@ if (isset($_POST['add'])) {
         if ($db->query($query)) {
             //sucess
             $session->msg('s', "Área creada! ");
-			insertAccion($user['id_user'], '"' . $user['username'] . '" agregó el área "'.{$name}.'".', 1);
+			insertAccion($user['id_user'], '"' . $user['username'] . '" agregó el área ' . $name . '.', 1);
             redirect('add_area.php', false);
         } else {
             //failed

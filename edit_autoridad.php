@@ -37,7 +37,7 @@ if (isset($_POST['update'])) {
         if ($result && $db->affected_rows() === 1) {
             //sucess
             $session->msg('s', "Autoridad actualizada. ");
-			insertAccion($user['id_user'], '"' . $user['username'] . '" editó la autoridad ID('.$e_autoridad['id_cat_aut'].') quedando "'.{$name}.'".', 2);
+			insertAccion($user['id_user'], '"' . $user['username'] . '" editó la autoridad ID('.$e_autoridad['id_cat_aut'].') quedando "'.$name.'".', 2);
             redirect('edit_autoridad.php?id=' . (int)$e_autoridad['id_cat_aut'], false);
         } else {
             //failed

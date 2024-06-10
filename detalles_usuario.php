@@ -58,12 +58,11 @@ endif;
             <tr style="height: 10px;"">
               <th style=" width: 1%;">#</th>
               <th style="width: 10%;">Nombre(s)</th>
-              <th style="width: 12%;">Apellidos</th>
-              <th style="width: 5%;">Correo</th>
-              <th style="width: 17%;">Área y Cargo</th>
+              <th style="width: 10%;">Apellidos</th>
+              <th style="width: 15%;">Área y Cargo</th>
               <th style="width: 1%;">Estatus</th>
               <?php if ($otro == 1 || $nivel_user == 1 || ($nivel_user == 14 )) : ?>
-                <th style="width: 10%;" class="text-center">Acciones</th>
+                <th style="width: 5%;" class="text-center">Acciones</th>
               <?php endif ?>
             </tr>
           </thead>
@@ -73,7 +72,6 @@ endif;
                 <td class="text-center"><?php echo count_id(); ?></td>
                 <td><?php echo remove_junk(ucwords($a_detalle['nombre'])) ?></td>
                 <td><?php echo remove_junk(ucwords($a_detalle['apellidos'])) ?></td>
-                <td><?php echo remove_junk($a_detalle['correo']) ?></td>
                 <td><?php echo remove_junk(ucwords($a_detalle['nombre_cargo'])) ?> - <?php echo remove_junk(ucwords($a_detalle['nombre_area'])) ?></td>
                 <td class="text-center">
                   <?php if ($a_detalle['estatus_detalle'] === '1') : ?>

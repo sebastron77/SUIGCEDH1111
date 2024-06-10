@@ -46,17 +46,19 @@ if (isset($_POST['exp_laboral'])) {
     $institucion = $_POST['institucion'];
     $inicio = $_POST['inicio'];
     $conclusion = $_POST['conclusion'];
+    $inicio_t = $_POST['inicio_t'];
+    $conclusion_t = $_POST['conclusion_t'];
     $texto = "";
 
     for ($i = 0; $i < sizeof($puesto); $i = $i + 1) {
 
         $query = "INSERT INTO rel_curriculum_laboral (";
-        $query .= "id_detalle_usuario, puesto, institucion, inicio, conclusion";
+        $query .= "id_detalle_usuario, puesto, institucion, inicio, conclusion, inicio_t, conclusion_t";
         $query .= ") VALUES (";
-        $query .= " '{$idP}','{$puesto[$i]}','{$institucion[$i]}','{$inicio[$i]}','{$conclusion[$i]}' ";
+        $query .= " '{$idP}','{$puesto[$i]}','{$institucion[$i]}','{$inicio[$i]}','{$conclusion[$i]}','{$inicio_t[$i]}','{$conclusion_t[$i]}' ";
         $query .= ")";
         $texto = $texto . $query;
-        $x=$db->query($query);
+        $x = $db->query($query);
     }
     if (isset($x)) {
         //sucess
@@ -75,8 +77,24 @@ if (isset($_POST['exp_laboral'])) {
 ?>
 
 <script type="text/javascript">
+    function showMe(box) {
+        var arrayDeCadenas = box.id.split("_");
+        var num = arrayDeCadenas[arrayDeCadenas.length - 1];
+        // alert(num);
+        if ($('#fecha_' + num).is(":checked")) {
+            //alert(arrayDeCadenas[arrayDeCadenas.length-1]);
+            $("#ejercicio_" + num).hide();
+            $("#concreta_" + num).show();
+        } else {
+            $("#ejercicio_" + num).show();
+            $("#concreta_" + num).hide();
+        }
+    }
+
     $(document).ready(function() {
+
         $("#addRow").click(function() {
+            var num = (document.getElementsByClassName("puesto").length) + 1;
             var html = '<hr style="margin-top: -1%; margin-left: 1%; width: 96.5%; border-width: 3px; border-color: #7263f0; opacity: 1"></hr>';
 
             html += '<div id="inputFormRow" style="margin-top: 4%;">';
@@ -95,37 +113,68 @@ if (isset($_POST['exp_laboral'])) {
             html += '	    </div> <br><br>';
             html += '   </div>';
             html += '   <div class="row">';
-            html += '      <div class="col-md-4">';
+            html += '      <div class="col-md-6">';
             html += '          <div class="form-group">';
             html += '              <label for="puesto">Puesto</label>';
-            html += '                  <input type="text" class="form-control" name="puesto[]" id="puesto">';
+            html += '                  <input type="text" class="form-control puesto" name="puesto[]" id="puesto">';
             html += '          </div>';
             html += '      </div>';
-            html += '      <div class="col-md-4">';
+            html += '      <div class="col-md-6">';
             html += '          <div class="form-group">';
             html += '              <label for="institucion">Institución</label>';
             html += '              <input type="text" class="form-control" name="institucion[]" id="institucion">';
             html += '          </div>';
             html += '      </div>';
-            html += '      <div class="col-md-4">';
-            html += '          <div class="form-group">';
-            html += '              <label for="inicio">Fecha de Inicio</label>';
-            html += '              <input type="date" class="form-control" name="inicio[]" id="inicio">';
-            html += '          </div>';
+            html += '   <div class="row">';
+            html += '      <div class="col-md-3">';
+            html += '           <div class="form-group">';
+            html += '                <label for="persona">¿Fecha especifica?</label><br>';
+            html += '                <label class="switch" style="float:left;">';
+            html += '                    <div class="row">';
+            html += '                        <input type="checkbox" id="fecha_' + num + '" name="fecha_' + num + '" onclick="showMe(this)" checked>';
+            html += '                        <span class="slider round"></span>';
+            html += '                        <div>';
+            html += '                            <p style="margin-left: 150%; margin-top: -3%; font-size: 14px;">No/Sí</p>';
+            html += '                        </div>';
+            html += '                    </div>';
+            html += '                </label><br>';
+            html += '            </div>';
+            html += '        </div>';
             html += '      </div>';
-            html += '      <div class="col-md-4">';
-            html += '          <div class="form-group">';
-            html += '              <label for="conclusion">Fecha de Conclusión</label>';
-            html += '              <input type="date" class="form-control" name="conclusion[]" id="conclusion">';
-            html += '          </div>';
-            html += '      </div>';
-            html += '      <div class="col-md-4">';
-            html += '          <div class="form-group">';
-            html += '              <label for="conclusion" style="visibility:hidden">Fecha de Conclusión</label>';
-            html += '              <input type="file" style="visibility:hidden" accept="application/pdf" class="form-control" name="archivo_comprobatorio[]">';
-            html += '          </div>';
-            html += '      </div>';
+            html += '    <div class="row" id="concreta_' + num + '">';
+            html += '       <div class="col-md-4">';
+            html += '           <div class="form-group">';
+            html += '               <label for="inicio">Fecha de Inicio</label>';
+            html += '               <input type="date" class="form-control" name="inicio[]" id="inicio">';
+            html += '           </div>';
+            html += '       </div>';
+            html += '       <div class="col-md-4">';
+            html += '           <div class="form-group">';
+            html += '               <label for="conclusion">Fecha de Conclusión</label>';
+            html += '               <input type="date" class="form-control" name="conclusion[]" id="conclusion">';
+            html += '           </div>';
+            html += '       </div>';
+            html += '       <div class="col-md-4">';
+            html += '           <div class="form-group">';
+            html += '               <label for="conclusion" style="visibility:hidden">Fecha de Conclusión</label>';
+            html += '               <input type="file" style="visibility:hidden" accept="application/pdf" class="form-control" name="archivo_comprobatorio[]">';
+            html += '           </div>';
+            html += '       </div>';
             html += '   </div>';
+            html += '   <div class="row" id="ejercicio_' + num + '" style="display:none;">';
+            html += '            <div class="col-md-4">';
+            html += '                 <div class="form-group">';
+            html += '                    <label for="inicio">Fecha de Inicio</label>';
+            html += '                    <input type="text" class="form-control" name="inicio_t[]" id="inicio">';
+            html += '                </div>';
+            html += '            </div>';
+            html += '            <div class="col-md-4">';
+            html += '                <div class="form-group">';
+            html += '                    <label for="conclusion">Fecha de Conclusión</label>';
+            html += '                    <input type="text" class="form-control" name="conclusion_t[]" id="conclusion">';
+            html += '               </div>';
+            html += '            </div>';
+            html += '         </div>';
             html += '</div>';
             html += '';
 
@@ -135,6 +184,8 @@ if (isset($_POST['exp_laboral'])) {
         $(document).on('click', '#removeRow', function() {
             $(this).closest('#inputFormRow').remove();
         });
+
+
     });
 </script>
 
@@ -172,7 +223,7 @@ if (isset($_POST['exp_laboral'])) {
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="puesto">Puesto</label>
-                                <input type="text" class="form-control" name="puesto[]" id="puesto" required>
+                                <input type="text" class="form-control puesto" name="puesto[]" id="puesto_1" required>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -183,14 +234,44 @@ if (isset($_POST['exp_laboral'])) {
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="inicio">Fecha Inicio</label>
-                                <input type="date" class="form-control" name="inicio[]" id="inicio">
+                                <label for="persona">¿Fecha especifica?</label>
+                                <label class="switch">
+                                    <div class="row">
+                                        <input type="checkbox" id="fecha_1" name="fecha_1" onclick="showMe(this)" checked>
+                                        <span class="slider round"></span>
+                                        <div>
+                                            <p style="margin-left: 150%; margin-top: -3%; font-size: 14px;">No/Sí</p>
+                                        </div>
+                                    </div>
+                                </label>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="conclusion">Fecha Conclusión</label>
-                                <input type="date" class="form-control" name="conclusion[]" id="conclusion">
+                        <div class="row" id="concreta_1">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="inicio">Fecha Inicio</label>
+                                    <input type="date" class="form-control" name="inicio[]" id="inicio">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="conclusion">Fecha Conclusión</label>
+                                    <input type="date" class="form-control" name="conclusion[]" id="conclusion">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="ejercicio_1" style="display:none;">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="inicio">Fecha Inicio</label>
+                                    <input type="text" class="form-control" name="inicio_t[]" id="inicio">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="conclusion">Fecha Conclusión</label>
+                                    <input type="text" class="form-control" name="conclusion_t[]" id="conclusion">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -225,8 +306,13 @@ if (isset($_POST['exp_laboral'])) {
                     <tr>
                         <td style="font-size: 14px;"><?php echo remove_junk(ucwords($cur['puesto'])) ?></td>
                         <td style="font-size: 14px;"><?php echo remove_junk(ucwords($cur['institucion'])) ?></td>
-                        <td style="font-size: 14px;"><?php echo remove_junk(ucwords($cur['inicio'])) ?></td>
-                        <td style="font-size: 14px;"><?php echo remove_junk(ucwords($cur['conclusion'])) ?></td>
+                        <?php if (($cur['inicio_t'] != '') && $cur['conclusion_t'] != '') : ?>
+                            <td style="font-size: 14px;"><?php echo remove_junk(ucwords($cur['inicio_t'])) ?></td>
+                            <td style="font-size: 14px;"><?php echo remove_junk(ucwords($cur['conclusion_t'])) ?></td>
+                        <?php else : ?>
+                            <td style="font-size: 14px;"><?php echo remove_junk(ucwords($cur['inicio'])) ?></td>
+                            <td style="font-size: 14px;"><?php echo remove_junk(ucwords($cur['conclusion'])) ?></td>
+                        <?php endif; ?>
                         <td style="font-size: 14px;" class="text-center">
                             <a href="edit_exp_laboral.php?id=<?php echo (int)$cur['id_rel_cur_lab']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip" style="height: 30px; width: 30px;"><span class="material-symbols-rounded" style="font-size: 18px; color: black; margin-top: 1px; margin-left: -3px;">edit</span>
                             </a>
@@ -234,7 +320,7 @@ if (isset($_POST['exp_laboral'])) {
                     </tr>
                 <?php endforeach; ?>
             </tbody>
-        </table>y
+        </table>
     </div>
 </div>
 

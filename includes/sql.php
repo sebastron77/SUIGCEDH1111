@@ -77,7 +77,7 @@ function find_all_cat_entidad()
   $result = find_by_sql($sql);
   return $result;
 }
-function find_by_violentados($tableA, $tableB, $id,$tipo)
+function find_by_violentados($tableA, $tableB, $id, $tipo)
 {
   global $db;
   $id = (int)$id;
@@ -86,12 +86,12 @@ function find_by_violentados($tableA, $tableB, $id,$tipo)
 	LEFT JOIN {$db->escape($tableB)} 
 	USING(id_{$db->escape($tableB)}) 
 	WHERE id_queja_date='{$db->escape($id)}' ";
-	if($tipo >0){
-		$sql .= " AND id_rel_queja_reclasificacion=".$tipo;
-	}else{
-		$sql .= " AND id_rel_queja_reclasificacion is  NULL";
-	}
-	$result = find_by_sql($sql);
+  if ($tipo > 0) {
+    $sql .= " AND id_rel_queja_reclasificacion=" . $tipo;
+  } else {
+    $sql .= " AND id_rel_queja_reclasificacion is  NULL";
+  }
+  $result = find_by_sql($sql);
   return $result;
 }
 /*
@@ -105,8 +105,8 @@ function find_by_violentados_all($tableA, $tableB, $id)
 	FROM {$db->escape($tableA)} 
 	LEFT JOIN {$db->escape($tableB)} 
 	USING(id_{$db->escape($tableB)}) 
-	WHERE id_queja_date='{$db->escape($id)}' ";	
-	$result = find_by_sql($sql);
+	WHERE id_queja_date='{$db->escape($id)}' ";
+  $result = find_by_sql($sql);
   return $result;
 }
 /*
@@ -120,12 +120,12 @@ function find_by_violentados_old($tableA, $tableB, $id)
 	FROM {$db->escape($tableA)} 
 	LEFT JOIN {$db->escape($tableB)} 
 	USING(id_{$db->escape($tableB)}) 
-	WHERE id_queja_date='{$db->escape($id)}' ";	
-	$result = find_by_sql($sql);
+	WHERE id_queja_date='{$db->escape($id)}' ";
+  $result = find_by_sql($sql);
   return $result;
 }
 
-function find_all_quejas($id, $user,$anio)
+function find_all_quejas($id, $user, $anio)
 {
   global $db;
   $id = (int)$id;
@@ -153,7 +153,7 @@ function find_all_quejas($id, $user,$anio)
 
 
 
-function find_all_quejas_region($anio,$id_area)
+function find_all_quejas_region($anio, $id_area)
 {
   $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, q.id_cat_med_pres, mp.id_cat_med_pres, mp.descripcion as medio_pres, au.nombre_autoridad, 
   cq.nombre as nombre_quejoso,id_user_asignado,q.estado_procesal, q.id_tipo_resolucion as id_resolucion, ";
@@ -540,7 +540,7 @@ function search_user($name)
   global $db;
   $sql  = "SELECT id_user FROM `users` WHERE username ='{$db->escape($name)}'  LIMIT 1;";
   $result = $db->query($sql);
-    return ($db->fetch_assoc($result));
+  return ($db->fetch_assoc($result));
 }
 
 
@@ -604,7 +604,7 @@ function count_by_id($table, $nombre_id)
 /*------------------------------------------------------------------------*/
 /* Funcion para contar los ID de orientacion para saber su cantidad total */
 /*------------------------------------------------------------------------*/
-function count_by_id_orientacion($table, $nombre_id,$year)
+function count_by_id_orientacion($table, $nombre_id, $year)
 {
   global $db;
   if (tableExists($table)) {
@@ -617,7 +617,7 @@ function count_by_id_orientacion($table, $nombre_id,$year)
 /*------------------------------------------------------------------------*/
 /* Funcion para contar los ID de canalizacion para saber su cantidad total */
 /*------------------------------------------------------------------------*/
-function count_by_id_canalizacion($table, $nombre_id,$year)
+function count_by_id_canalizacion($table, $nombre_id, $year)
 {
   global $db;
   if (tableExists($table)) {
@@ -896,7 +896,7 @@ function find_all_orientaciones($anio)
   $sql .= " FROM orientacion_canalizacion as o";
   $sql .= " LEFT JOIN users as u ON u.id_user = o.id_creador";
   $sql .= " LEFT JOIN cat_medio_pres as cmp ON cmp.id_cat_med_pres = o.medio_presentacion ";
-   $sql .= " LEFT JOIN cat_municipios as mp ON mp.id_cat_mun = o.id_cat_mun ";
+  $sql .= " LEFT JOIN cat_municipios as mp ON mp.id_cat_mun = o.id_cat_mun ";
   $sql .= " LEFT JOIN detalles_usuario as d ON d.id_det_usuario = u.id_detalle_user WHERE tipo_solicitud=1 AND o.folio LIKE '%/{$anio}-%' ORDER BY o.id_or_can DESc ;";
   return find_by_sql($sql);
 }
@@ -946,7 +946,7 @@ function find_all_actuaciones($anio)
 /*----------------------------------------------*/
 /* Funcion que encuentra todas las actuaciones */
 /*----------------------------------------------*/
-function find_all_actuaciones_area($anio,$area)
+function find_all_actuaciones_area($anio, $area)
 {
   global $db;
   $results = array();
@@ -960,7 +960,7 @@ function find_all_actuaciones_area($anio,$area)
    WHERE id_area_creacion = '{$area}' AND folio_actuacion LIKE '%/{$anio}-%' ORDER BY fecha_captura_acta";
   $result = find_by_sql($sql);
   return $result;
-   /*WHERE area_creacion = '{$area}' AND folio_actuacion LIKE '%/{$anio}-%' ORDER BY fecha_captura_acta";*/
+  /*WHERE area_creacion = '{$area}' AND folio_actuacion LIKE '%/{$anio}-%' ORDER BY fecha_captura_acta";*/
 }
 /*----------------------------------------------------------*/
 /* Funcion que encuentra todos los acuerdos de no violacion */
@@ -4578,7 +4578,7 @@ function muestra_area($id)
 /*----------------------------------------------*/
 /* Funcion que encuentra todas las consejo */
 /*----------------------------------------------*/
-function find_all_consejo( $year)
+function find_all_consejo($year)
 {
   global $db;
   $results = array();
@@ -4631,9 +4631,9 @@ function med_pres_estQ($year)
   $sql  = "SELECT oc.id_cat_med_pres, mp.descripcion, COUNT(oc.id_queja_date) as total, mp.color_estadistica";
   $sql  .= " FROM quejas_dates oc ";
   $sql  .= " LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = oc.id_cat_med_pres ";
-  if((int) $year > 0){
-	$sql .= " WHERE oc.folio_queja LIKE '%/{$year}-%' ";
-}
+  if ((int) $year > 0) {
+    $sql .= " WHERE oc.folio_queja LIKE '%/{$year}-%' ";
+  }
   $sql  .= " GROUP BY oc.id_cat_med_pres;";
   return find_by_sql($sql);
 }
@@ -4644,10 +4644,10 @@ function areas_estQ($year)
   $sql  = "SELECT a.id_area, a.nombre_area, COUNT(q.id_queja_date) as total, a.color_estadistica
 			FROM quejas_dates q 
 			LEFT JOIN area a ON q.id_area_asignada = a.id_area ";
-  if((int) $year > 0){
-	$sql .= " WHERE q.folio_queja LIKE '%/{$year}-%' ";
-}			
-			$sql .= " GROUP BY a.id_area;";
+  if ((int) $year > 0) {
+    $sql .= " WHERE q.folio_queja LIKE '%/{$year}-%' ";
+  }
+  $sql .= " GROUP BY a.id_area;";
   return find_by_sql($sql);
 }
 
@@ -4858,9 +4858,9 @@ function autoridadQ($year)
   $sql  = "SELECT ca.`nombre_autoridad`, COUNT(a.`id_queja_date`) as total 
   FROM `quejas_dates` a 
   LEFT JOIN cat_autoridades ca ON a.`id_cat_aut` = ca.`id_cat_aut` ";
-  if((int) $year > 0){
-	$sql .= " WHERE a.folio_queja LIKE '%/{$year}-%' ";
-}
+  if ((int) $year > 0) {
+    $sql .= " WHERE a.folio_queja LIKE '%/{$year}-%' ";
+  }
   $sql .= " GROUP BY ca.`id_cat_aut`;";
   return find_by_sql($sql);
 }
@@ -4870,9 +4870,9 @@ function derechoVulneradoQ($year)
   FROM `quejas_dates` a
   LEFT JOIN `rel_queja_der_vuln` b ON a.`id_queja_date`=b.`id_queja_date` 
   LEFT JOIN `cat_der_vuln` ca ON b.`id_cat_der_vuln` = ca.`id_cat_der_vuln`";
-if((int) $year > 0){
-	$sql .= " WHERE a.folio_queja LIKE '%/{$year}-%' ";
-}  
+  if ((int) $year > 0) {
+    $sql .= " WHERE a.folio_queja LIKE '%/{$year}-%' ";
+  }
   $sql .= " GROUP BY ca.`id_cat_der_vuln`
   ORDER BY descripcion ;";
   return find_by_sql($sql);
@@ -4932,16 +4932,16 @@ function find_all_correspondenciaAdmin()
 /*-------------------------------------------------------------*/
 /* Funcion que encuentra todas la correspondencias de un área */
 /*-------------------------------------------------------------*/
-function find_all_correspondencia($area,$year)
+function find_all_correspondencia($area, $year)
 {
   $sql = "SELECT a.*,b.`nombre_area`,c.nombre_area as nombre_area_creacion 
   FROM correspondencia a 
   LEFT JOIN `area` b ON a.`id_area_turnada`=b.`id_area`  
   LEFT JOIN `area` c ON a.`area_creacion`=c.`id_area` 
   WHERE area_creacion='{$area}' 
-    AND YEAR(fecha_recibido)='".$year."' 
+    AND YEAR(fecha_recibido)='" . $year . "' 
   ORDER BY fecha_recibido DESC";
-    //AND folio LIKE '%/".$year."-%' 
+  //AND folio LIKE '%/".$year."-%' 
   $result = find_by_sql($sql);
   return $result;
 }
@@ -4999,16 +4999,16 @@ function last_id_consejo()
 /*--------------------------------------------------*/
 function find_all_informes_areasAdmin($year)
 {
-  $sql = "SELECT * FROM informe_actividades_areas a LEFT JOIN area b ON a.area_creacion= id_area  WHERE folio LIKE '%/" . $year ."-%' ";
+  $sql = "SELECT * FROM informe_actividades_areas a LEFT JOIN area b ON a.area_creacion= id_area  WHERE folio LIKE '%/" . $year . "-%' ";
   $result = find_by_sql($sql);
   return $result;
 }
 /*-------------------------------------------------------------*/
 /* Funcion que encuentra todas las correspondencias de un área */
 /*-------------------------------------------------------------*/
-function find_all_informes_areas($area,$year)
+function find_all_informes_areas($area, $year)
 {
-  $sql = "SELECT * FROM informe_actividades_areas a LEFT JOIN area b ON a.area_creacion= id_area WHERE area_creacion='{$area}' AND folio LIKE '%/" . $year ."-%'";
+  $sql = "SELECT * FROM informe_actividades_areas a LEFT JOIN area b ON a.area_creacion= id_area WHERE area_creacion='{$area}' AND folio LIKE '%/" . $year . "-%'";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -5058,7 +5058,7 @@ function find_all_capacitaciones($ejercicio)
 /*----------------------------------------------*/
 /* Funcion que encuentra todas las orientaciones */
 /*----------------------------------------------*/
-function find_all_capacitaciones_area($area,$ejercicio)
+function find_all_capacitaciones_area($area, $ejercicio)
 {
   global $db;
   $results = array();
@@ -5195,7 +5195,7 @@ function find_all_recomendaciones_generales()
 /*------------------------------------------------------------------*/
 function find_all_eventos($year)
 {
-  $sql = "SELECT a.*, b.nombre_area FROM eventos a  LEFT JOIN area as b ON a.area_creacion = b.id_area WHERE YEAR(fecha)='".$year."' ";
+  $sql = "SELECT a.*, b.nombre_area FROM eventos a  LEFT JOIN area as b ON a.area_creacion = b.id_area WHERE YEAR(fecha)='" . $year . "' ";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -5227,19 +5227,19 @@ function find_all_env_correspondenciaAdmin($year)
   IFNULL(c.fecha_espera_respuesta,'') as fecha_espera_respuesta, c.asunto, c.medio_envio, a.nombre_area ,IF(accion_realizada is null,'No','Si') as accion_realizada
           FROM envio_correspondencia c
           LEFT JOIN area a ON c.se_turna_a_area = a.id_area
-		  WHERE YEAR(fecha_emision)='".$year."-%' ORDER BY fecha_emision DESC";
+		  WHERE YEAR(fecha_emision)='" . $year . "-%' ORDER BY fecha_emision DESC";
   $result = find_by_sql($sql);
   return $result;
 }
 /*-------------------------------------------------------------*/
 /* Funcion que encuentra todas las correspondencias de un área */
 /*-------------------------------------------------------------*/
-function find_all_env_correspondencia($area,$year)
+function find_all_env_correspondencia($area, $year)
 {
   $sql = "SELECT c.id_env_corresp, fecha_emision,IFNULL(no_oficio,'S/N') as no_oficio,c.folio, IFNULL(c.fecha_en_que_se_turna,'') as fecha_en_que_se_turna, tipo_tramite,
   IFNULL(c.fecha_espera_respuesta,'') as fecha_espera_respuesta, c.asunto, c.medio_envio, a.nombre_area ,IF(accion_realizada is null,'No','Si') as accion_realizada
           FROM envio_correspondencia c
-          LEFT JOIN area a ON c.se_turna_a_area = a.id_area WHERE area_creacion='{$area}' AND YEAR(fecha_emision)='".$year."' ORDER BY fecha_emision DESC";
+          LEFT JOIN area a ON c.se_turna_a_area = a.id_area WHERE area_creacion='{$area}' AND YEAR(fecha_emision)='" . $year . "' ORDER BY fecha_emision DESC";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -5280,7 +5280,7 @@ function find_all_env_correspondenciaAdmin2($year)
 /*-------------------------------------------------------------*/
 /* Funcion que encuentra todas las correspondencias de un área */
 /*-------------------------------------------------------------*/
-function find_all_env_correspondencia2($area,$year)
+function find_all_env_correspondencia2($area, $year)
 {
   $sql = "SELECT c.id_env_corresp, fecha_emision,c.folio, IFNULL(no_oficio,'S/N') as no_oficio,  IFNULL(c.fecha_en_que_se_turna,'') as fecha_en_que_se_turna, 
   IFNULL(c.fecha_espera_respuesta,'') as fecha_espera_respuesta, c.asunto, c.medio_envio, a.nombre_area, 
@@ -5298,9 +5298,9 @@ function find_all_env_correspondencia2($area,$year)
 /*------------------------------------------------------------------*/
 /* Ver losoficios de colaboracion de un folio*/
 /*------------------------------------------------------------------*/
-function find_oficios_colaboracion($id,$tipo)
+function find_oficios_colaboracion($id, $tipo)
 {
-  $sql = "SELECT * FROM rel_colaboracion_oficios WHERE id_colaboraciones= ".$id." AND tipo_documento='".$tipo."'";
+  $sql = "SELECT * FROM rel_colaboracion_oficios WHERE id_colaboraciones= " . $id . " AND tipo_documento='" . $tipo . "'";
 
   $result = find_by_sql($sql);
   return $result;
@@ -5311,7 +5311,7 @@ function find_oficios_colaboracion($id,$tipo)
 /*------------------------------------------------------------------*/
 function find_quejas_area($area)
 {
-  $sql = "SELECT id_queja_date as id, folio_queja as folio FROM quejas_dates WHERE id_area_asignada= ".$area;
+  $sql = "SELECT id_queja_date as id, folio_queja as folio FROM quejas_dates WHERE id_area_asignada= " . $area;
   $result = find_by_sql($sql);
   return $result;
 }
@@ -5319,15 +5319,15 @@ function find_quejas_area($area)
 /*------------------------------------------------------------------*/
 /* Ver las orientaciones/canalizaciones por area */
 /*------------------------------------------------------------------*/
-function find_orican_area($area,$tipo)
+function find_orican_area($area, $tipo)
 {
   $sql = "SELECT id_or_can as id, folio 
 FROM orientacion_canalizacion a 
 LEFT JOIN users b ON  a.id_creador=b.id_user 
 LEFT JOIN detalles_usuario c ON b.id_detalle_user= c.id_det_usuario  
 LEFT JOIN cargos d ON d.id_cargos= c.id_cargo
-WHERE d.id_area= ".$area.
-"  AND tipo_solicitud= ".$tipo;
+WHERE d.id_area= " . $area .
+    "  AND tipo_solicitud= " . $tipo;
   $result = find_by_sql($sql);
   return $result;
 }
@@ -5338,7 +5338,7 @@ WHERE d.id_area= ".$area.
 /*------------------------------------------------------------------*/
 function find_dialectos($tipo)
 {
-  $sql = "SELECT DISTINCT lengua FROM `orientacion_canalizacion` WHERE tipo_solicitud=".$tipo." GRoup BY lengua  ORDER BY lengua";
+  $sql = "SELECT DISTINCT lengua FROM `orientacion_canalizacion` WHERE tipo_solicitud=" . $tipo . " GRoup BY lengua  ORDER BY lengua";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -5349,7 +5349,7 @@ function find_dialectos($tipo)
 /*------------------------------------------------------------------*/
 function find_localidadesOC($tipo)
 {
-  $sql = "SELECT DISTINCT municipio_localidad FROM `orientacion_canalizacion` WHERE tipo_solicitud=".$tipo." GRoup BY municipio_localidad  ORDER BY municipio_localidad";
+  $sql = "SELECT DISTINCT municipio_localidad FROM `orientacion_canalizacion` WHERE tipo_solicitud=" . $tipo . " GRoup BY municipio_localidad  ORDER BY municipio_localidad";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -5377,11 +5377,10 @@ function find_all_competencia()
 function count_by_competencias()
 {
   global $db;
-  
-    $sql    = "SELECT COUNT(id_queja_date) AS total FROM quejas_dates WHERE revision_presidencia=1 ";
-    $result = $db->query($sql);
-    return ($db->fetch_assoc($result));
-  
+
+  $sql    = "SELECT COUNT(id_queja_date) AS total FROM quejas_dates WHERE revision_presidencia=1 ";
+  $result = $db->query($sql);
+  return ($db->fetch_assoc($result));
 }
 
 
@@ -5389,9 +5388,9 @@ function count_by_competencias()
 /*------------------------------------------------------------------*/
 /* Ver todas las quejas que han sido agregadas al libro electrónico */
 /*------------------------------------------------------------------*/
-function find_eventos_area($id_area,$year)
+function find_eventos_area($id_area, $year)
 {
-  $sql = "SELECT a.*, b.nombre_area FROM eventos a  LEFT JOIN area as b ON a.area_creacion = b.id_area WHERE area_creacion=".$id_area." AND YEAR(fecha)='".$year."'";
+  $sql = "SELECT a.*, b.nombre_area FROM eventos a  LEFT JOIN area as b ON a.area_creacion = b.id_area WHERE area_creacion=" . $id_area . " AND YEAR(fecha)='" . $year . "'";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -5400,7 +5399,7 @@ function find_eventos_area($id_area,$year)
 
 function find_documentos_gestion($id)
 {
-    return find_by_sql("SELECT * FROM rel_gestiones WHERE id_gestion = '{$id}'");
+  return find_by_sql("SELECT * FROM rel_gestiones WHERE id_gestion = '{$id}'");
 }
 
 
@@ -5428,7 +5427,7 @@ WHERE tipo_ficha = 1 AND  YEAR(fecha_intervencion)= '{$anio}' ;";
 /*----------------------------------------------------------------*/
 /* Funcion que encuentra todas las fichas técnicas del Área Médica*/
 /*----------------------------------------------------------------*/
-function find_all_fichasUser($anio,$id_user)
+function find_all_fichasUser($anio, $id_user)
 {
   global $db;
   $results = array();
@@ -5487,7 +5486,7 @@ function find_by_id_ficha($id_ficha, $tipo)
     return null;
 }
 
-function find_by_id_ficha2($id_ficha,$tipo)
+function find_by_id_ficha2($id_ficha, $tipo)
 {
   global $db;
   $sql = $db->query("SELECT f.id_ficha, f.folio, fun.descripcion as funcion, ff.folio as num_queja,
@@ -5535,7 +5534,7 @@ WHERE tipo_ficha = 2  AND YEAR(fecha_intervencion)= '{$anio}' ;";
 /*----------------------------------------------------------------*/
 /* Funcion que encuentra todas las fichas técnicas del Área Médica*/
 /*----------------------------------------------------------------*/
-function find_all_fichasUser2($anio,$id_user)
+function find_all_fichasUser2($anio, $id_user)
 {
   $sql = "SELECT f.id_ficha,
        f.folio,
@@ -5576,11 +5575,11 @@ function find_all_funcion_P()
 /*----------------------------------------------------------------*/
 function find_all_jornadas($year)
 {
-  $sql = "SELECT * FROM jornadas WHERE YEAR(fecha_actividad)=".$year."";
+  $sql = "SELECT * FROM jornadas WHERE YEAR(fecha_actividad)=" . $year . "";
   $result = find_by_sql($sql);
   return $result;
 }
-  /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 /* Funcion que encuentra una jornada por id, que ayudara al momento de editar */
 /*----------------------------------------------------------------------------*/
 function find_by_id_jornadas($id)
@@ -5625,7 +5624,7 @@ LEFT JOIN `cat_agendas` c USING(id_cat_agendas)";
 /*------------------------------------------------------------------*/
 /* Funcion para encontrar el ultimo id la tabla */
 /*------------------------------------------------------------------*/
-function last_id_table($table,$nombre_id)
+function last_id_table($table, $nombre_id)
 {
   $sql = "SELECT * FROM {$table} ORDER BY {$nombre_id} DESC LIMIT 1";
   $result = find_by_sql($sql);
@@ -5638,11 +5637,10 @@ function last_id_table($table,$nombre_id)
 function count_by_mediacion($year)
 {
   global $db;
-  
-    $sql    = "SELECT COUNT(id_queja_date) AS total FROM quejas_dates q WHERE  mediacion = '1' AND  folio_queja LIKE '%/{$year}-%' ";
-    $result = $db->query($sql);
-    return ($db->fetch_assoc($result));
-  
+
+  $sql    = "SELECT COUNT(id_queja_date) AS total FROM quejas_dates q WHERE  mediacion = '1' AND  folio_queja LIKE '%/{$year}-%' ";
+  $result = $db->query($sql);
+  return ($db->fetch_assoc($result));
 }
 
 
@@ -5655,7 +5653,7 @@ function find_all_grupos($capacitacion)
   $results = array();
   $sql = "SELECT 	id_rel_capacitacion_grupos,   id_capacitacion,  id_cat_grupo_vuln,  descripcion,  no_asistentes 
 		  FROM  rel_capacitacion_grupos a LEFT JOIN cat_grupos_vuln USING(id_cat_grupo_vuln)  
-		  WHERE id_capacitacion =".$capacitacion;
+		  WHERE id_capacitacion =" . $capacitacion;
   $result = find_by_sql($sql);
   return $result;
 }
@@ -5665,7 +5663,7 @@ function find_all_grupos($capacitacion)
 /*------------------------------------------------------------------------*/
 /* Funcion para contar los ID de quejas para saber su cantidad total */
 /*------------------------------------------------------------------------*/
-function count_by_id_quejas($table, $nombre_id,$year)
+function count_by_id_quejas($table, $nombre_id, $year)
 {
   global $db;
   if (tableExists($table)) {
@@ -5679,7 +5677,7 @@ function count_by_id_quejas($table, $nombre_id,$year)
 /*--------------------------------------------*/
 /* Funcion que encuentra la descripcion de un di */
 /*--------------------------------------------*/
-function find_campo_id($table, $id, $nombre_id,$columna)
+function find_campo_id($table, $id, $nombre_id, $columna)
 {
   global $db;
   if (tableExists($table)) {
@@ -5696,9 +5694,9 @@ function find_campo_id($table, $id, $nombre_id,$columna)
 function web_accesos($tipo)
 {
   global $db;
-  
-  $sql  = "SELECT modulo, COUNT(id_statistics) as total FROM statistics GROUP BY modulo"; 
-  
+
+  $sql  = "SELECT modulo, COUNT(id_statistics) as total FROM statistics GROUP BY modulo";
+
   return find_by_sql($sql);
 }
 
@@ -5708,10 +5706,10 @@ function web_accesos($tipo)
 
 function find_all_procesosUT($tipo_accion)
 {
-	global $db;
-  $sql = "SELECT * FROM recursos_decuncias WHERE tipo_accion='".$tipo_accion."';";
+  global $db;
+  $sql = "SELECT * FROM recursos_decuncias WHERE tipo_accion='" . $tipo_accion . "';";
   $result = find_by_sql($sql);
-  return $result;  
+  return $result;
 }
 
 /*------------------------------------------------------------------------*/
@@ -5719,18 +5717,17 @@ function find_all_procesosUT($tipo_accion)
 /*------------------------------------------------------------------------*/
 function count_by_procesoUT($tipo_accion)
 {
-	global $db;
-    $sql    = "SELECT COUNT(id_recursos_decuncias) AS total FROM recursos_decuncias WHERE tipo_accion='".$tipo_accion."';";    
-    $result = $db->query($sql);
-    return ($db->fetch_assoc($result));
-  
+  global $db;
+  $sql    = "SELECT COUNT(id_recursos_decuncias) AS total FROM recursos_decuncias WHERE tipo_accion='" . $tipo_accion . "';";
+  $result = $db->query($sql);
+  return ($db->fetch_assoc($result));
 }
 
 /*------------------------------------------------------------------------*/
 /* Funcion para estadistica de solicitudes-catalogos */
 /*------------------------------------------------------------------------*/
 
-function solEstadistica($tabla,$nombre_id, $nombre_campo)
+function solEstadistica($tabla, $nombre_id, $nombre_campo)
 {
   global $db;
   $sql  = "SELECT {$db->escape($nombre_campo)} as nombre, COUNT(id_solicitudes_informacion) as total, color_estadistica 
@@ -5772,7 +5769,7 @@ ORDER BY  MONTH(fecha_presentacion)";
 /* Funcion para estadistica de solicitudes-status */
 /*------------------------------------------------------------------------*/
 
-function find_all_quejasMediacion($anio,$area)
+function find_all_quejasMediacion($anio, $area)
 {
   global $db;
   $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, q.id_cat_med_pres,mp.descripcion as medio_pres, 
@@ -5789,8 +5786,8 @@ function find_all_quejasMediacion($anio,$area)
   $sql .= " LEFT JOIN cat_estatus_mediacion em ON q.estado_mediacion = em.id_cat_estatus_mediacion";
   $sql .= " LEFT JOIN detalles_usuario du ON q.id_user_asignado =  du.id_det_usuario";
   $sql .= " WHERE mediacion = '1' ";
-  if( $area > 0){
-  $sql .= " AND q.id_area_asignada =  {$area} ";
+  if ($area > 0) {
+    $sql .= " AND q.id_area_asignada =  {$area} ";
   }
   $sql .= " AND q.folio_queja LIKE '%/{$anio}-%' ";
   $result = find_by_sql($sql);
@@ -5808,10 +5805,10 @@ function mediaciontatus($year)
   $sql  = "SELECT IFNULL(concepto ,'Sin Dato') as tipo, SUM(valor) as total
 FROM rel_queja_mediacion
 LEFT JOIN `quejas_dates` USING(id_queja_date) ";
-if((int) $year > 0){
-	$sql .= " WHERE folio_queja LIKE '%/{$year}-%' ";
-}
-$sql .= " GROUP BY concepto;";
+  if ((int) $year > 0) {
+    $sql .= " WHERE folio_queja LIKE '%/{$year}-%' ";
+  }
+  $sql .= " GROUP BY concepto;";
   return find_by_sql($sql);
 }
 
@@ -5820,7 +5817,7 @@ $sql .= " GROUP BY concepto;";
 /* Funcion para estadistica de mediacion-catalogos */
 /*------------------------------------------------------------------------*/
 
-function medEstadistica($tabla,$nombre_id,$year)
+function medEstadistica($tabla, $nombre_id, $year)
 {
   global $db;
   $sql  = "SELECT COUNT(id_queja_date) as total, IFNULL(z.descripcion,'SD') as nombre
@@ -5828,10 +5825,10 @@ FROM quejas_dates q
 LEFT JOIN cat_quejosos cq ON cq.id_cat_quejoso = q.id_cat_quejoso
 LEFT JOIN {$db->escape($tabla)} z USING({$db->escape($nombre_id)}) 
 WHERE mediacion=1 ";
-if((int) $year > 0){
-	$sql .= " AND q.folio_queja LIKE '%/{$year}-%' ";
-}
-$sql .= " GROUP BY cq.{$db->escape($nombre_id)};";
+  if ((int) $year > 0) {
+    $sql .= " AND q.folio_queja LIKE '%/{$year}-%' ";
+  }
+  $sql .= " GROUP BY cq.{$db->escape($nombre_id)};";
   return find_by_sql($sql);
 }
 
@@ -5844,10 +5841,10 @@ function medAutoridad($year)
   FROM `quejas_dates` a 
   LEFT JOIN cat_autoridades ca ON a.`id_cat_aut` = ca.`id_cat_aut` 
   WHERE mediacion=1";
-if((int) $year > 0){
-	$sql .= " AND a.folio_queja LIKE '%/{$year}-%' ";
-}
-$sql .= "   GROUP BY ca.`id_cat_aut`;";
+  if ((int) $year > 0) {
+    $sql .= " AND a.folio_queja LIKE '%/{$year}-%' ";
+  }
+  $sql .= "   GROUP BY ca.`id_cat_aut`;";
   return find_by_sql($sql);
 }
 
@@ -5860,10 +5857,10 @@ function medArea($year)
   FROM `quejas_dates` a 
   LEFT JOIN area b ON a.`id_area_asignada` = b.`id_area` 
   WHERE mediacion=1";
-if((int) $year > 0){
-	$sql .= " AND a.folio_queja LIKE '%/{$year}-%' ";
-}
-$sql .= "   GROUP BY a.`id_area_asignada`;";
+  if ((int) $year > 0) {
+    $sql .= " AND a.folio_queja LIKE '%/{$year}-%' ";
+  }
+  $sql .= "   GROUP BY a.`id_area_asignada`;";
   return find_by_sql($sql);
 }
 
@@ -5937,26 +5934,25 @@ function find_by_ficha($id)
 {
   global $db;
   $id = (int)$id;
- 
-    $sql = $db->query("SELECT f.id_ficha, f.folio, fun.descripcion as funcion, ff.folio as num_queja,
-       CONCAT(p.nombre,' ', p.paterno,' ', p.materno) as nombre_paciente, f.ficha_adjunto, 
-		a.nombre_area as visitaduria, a2.nombre_area as area_solicitante,
-		 cd.descripcion as hechos,
-		protocolo_estambul,fecha_intervencion,resultado,documento_emitido,
-		nombre_especialista,clave_documento
-          FROM fichas f
-          LEFT JOIN cat_funcion fun ON f.id_cat_funcion = fun.id_cat_funcion
-          LEFT JOIN area a ON a.id_area = f.id_visitaduria
-		 LEFT JOIN area a2 ON a2.id_area = f.id_area_solicitante
-         LEFT JOIN cat_der_vuln cd USING(id_cat_der_vuln) 
-         LEFT JOIN paciente p ON p.id_paciente = f.id_paciente
-LEFT JOIN folios ff ON ff.id_folio = p.folio_expediente 
-		 WHERE id_ficha = '{$db->escape($id)}'");
-    if ($result = $db->fetch_assoc($sql))
-      return $result;
-    else
-      return null;
-  
+
+  $sql = $db->query("SELECT f.id_ficha, f.folio, fun.descripcion as funcion, ff.folio as num_queja,
+                      CONCAT(p.nombre,' ', p.paterno,' ', p.materno) as nombre_paciente, f.ficha_adjunto, 
+                      a.nombre_area as visitaduria, a2.nombre_area as area_solicitante,
+                      cd.descripcion as hechos,
+                      protocolo_estambul,fecha_intervencion,resultado,documento_emitido,
+                      nombre_especialista,clave_documento
+                      FROM fichas f
+                      LEFT JOIN cat_funcion fun ON f.id_cat_funcion = fun.id_cat_funcion
+                      LEFT JOIN area a ON a.id_area = f.id_visitaduria
+                      LEFT JOIN area a2 ON a2.id_area = f.id_area_solicitante
+                      LEFT JOIN cat_der_vuln cd USING(id_cat_der_vuln) 
+                      LEFT JOIN paciente p ON p.id_paciente = f.id_paciente
+                      LEFT JOIN folios ff ON ff.id_folio = p.folio_expediente 
+                      WHERE id_ficha = '{$db->escape($id)}'");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
 }
 
 /*---------------------------------------------------------------------------------*/
@@ -5965,20 +5961,20 @@ LEFT JOIN folios ff ON ff.id_folio = p.folio_expediente
 function find_acuaciones_mediacion($id)
 {
   global $db;
-  $sql  = "SELECT concepto, valor FROM rel_queja_mediacion WHERE id_queja_date=". $id ." ORDER BY id_rel_queja_mediacion;";
+  $sql  = "SELECT concepto, valor FROM rel_queja_mediacion WHERE id_queja_date=" . $id . " ORDER BY id_rel_queja_mediacion;";
   return $db->query($sql);
 }
 
 /*---------------------------------------------------------------------------------*/
 /* Funcion para saber las los derechos vulnerados de la recomendacion */
 /*---------------------------------------------------------------------------------*/
-function find_recomendacion_der_vuln($id,$tipo)
+function find_recomendacion_der_vuln($id, $tipo)
 {
   global $db;
-  if($tipo=='g'){
-	$sql  = "SELECT id_cat_der_vuln FROM rel_recomendacion_gral_der_vuln WHERE id_recom_general=". $id ." ;";
-  }else{
-	$sql  = "SELECT id_cat_der_vuln FROM rel_recomendacion_der_vuln WHERE id_recomendacion=". $id ." ;";	  
+  if ($tipo == 'g') {
+    $sql  = "SELECT id_cat_der_vuln FROM rel_recomendacion_gral_der_vuln WHERE id_recom_general=" . $id . " ;";
+  } else {
+    $sql  = "SELECT id_cat_der_vuln FROM rel_recomendacion_der_vuln WHERE id_recomendacion=" . $id . " ;";
   }
   return $db->query($sql);
 }
@@ -5989,7 +5985,7 @@ function find_recomendacion_der_vuln($id,$tipo)
 /* Funcion para estadistica de personal-catalogos */
 /*------------------------------------------------------------------------*/
 
-function persEstadistica($tabla,$nombre_id, $nombre_campo)
+function persEstadistica($tabla, $nombre_id, $nombre_campo)
 {
   global $db;
   $sql  = "SELECT 
@@ -6115,7 +6111,7 @@ function find_by_id_victima_desaparecido($table, $id, $nombre_id)
   global $db;
   $id = (int)$id;
   if (tableExists($table)) {
-	  $query="SELECT 
+    $query = "SELECT 
 		{$db->escape($nombre_id)},
 		IFNULL(CONCAT(nombre,' ',paterno,' ',materno),'') as nombre,
 		IFNULL(edad,'') as edad,
@@ -6140,7 +6136,7 @@ function find_by_id_victima_desaparecido($table, $id, $nombre_id)
 	  LEFT JOIN cat_discapacidades i USING(id_cat_disc)
 	  LEFT JOIN cat_comunidades j USING(id_cat_comun)
 	  WHERE {$db->escape($nombre_id)}='{$db->escape($id)}' LIMIT 1";
-	  
+
     $sql = $db->query($query);
     if ($result = $db->fetch_assoc($sql))
       return $result;
@@ -6153,11 +6149,11 @@ function find_by_id_victima_desaparecido($table, $id, $nombre_id)
 /*----------------------------------------------*/
 /* Funcion que encuentra los datos de la victima-colectivos */
 /*----------------------------------------------*/
-function find_by_id_victima_colectivo( $id)
+function find_by_id_victima_colectivo($id)
 {
   global $db;
   $id = (int)$id;
-	  $query="SELECT 
+  $query = "SELECT 
 		id_colectivos_atendidos,
 		a.id_cat_ent_fed,
 		a.id_cat_mun,
@@ -6173,32 +6169,32 @@ function find_by_id_victima_colectivo( $id)
 	  LEFT JOIN cat_entidad_fed d USING(id_cat_ent_fed)
 	  LEFT JOIN cat_municipios e USING(id_cat_mun)
 	  WHERE id_colectivos_atendidos='{$db->escape($id)}' LIMIT 1";
-	  
-    $sql = $db->query($query);
-    if ($result = $db->fetch_assoc($sql))
-      return $result;
-    else
-      return null;
+
+  $sql = $db->query($query);
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
 }
-	
-	
+
+
 /*----------------------------------------------*/
 /* Funcion que encuentra topdas las sesiones del paciente */
 /*----------------------------------------------*/
-	
+
 function find_all_sesiones($year)
 {
   $sql = "SELECT s.id_sesion, s.folio, s.fecha_atencion, s.estatus, s.nota_sesion, s.atendio, s.fecha_creacion, s.no_sesion, p.nombre, p.paterno, p.materno";
   $sql .= " FROM sesiones s";
   $sql .= " LEFT JOIN paciente p ON p.id_paciente = s.id_paciente ";
-  $sql .= " WHERE YEAR(s.fecha_atencion)= '".$year."' ";
+  $sql .= " WHERE YEAR(s.fecha_atencion)= '" . $year . "' ";
   $result = find_by_sql($sql);
   return $result;
 }
 
 /*----------------------------------------------*/
 /* 	Funcion que encuentra todos 
-			   los expedientes de  pacientes    */ 
+			   los expedientes de  pacientes    */
 /*----------------------------------------------*/
 function find_all_expedientes()
 {
@@ -6209,7 +6205,7 @@ function find_all_expedientes()
 
 
 /*----------------------------------------------*/
-/* Funcion que encuentra todos los pacientes    */ 
+/* Funcion que encuentra todos los pacientes    */
 /*----------------------------------------------*/
 function find_all_pacientes()
 {
@@ -6229,12 +6225,12 @@ function find_all_pacientes()
   $result = find_by_sql($sql);
   return $result;
 }
-	
-	
+
+
 /*----------------------------------------------*/
-/* Funcion que encuentra los datos del paciente */ 
-/*----------------------------------------------*/	
-	
+/* Funcion que encuentra los datos del paciente */
+/*----------------------------------------------*/
+
 function find_by_id_paciente($id)
 {
   global $db;
@@ -6265,8 +6261,8 @@ function find_by_id_paciente($id)
 
 /*----------------------------------------------*/
 /* Funcion que encuentra los datos del 
-	paciente para mostrar en la fichas 			*/ 
-/*----------------------------------------------*/	
+	paciente para mostrar en la fichas 			*/
+/*----------------------------------------------*/
 
 function find_by_id_paciente2($folio)
 {
@@ -6298,12 +6294,12 @@ function find_by_id_paciente2($folio)
 
 
 /*----------------------------------------------------------*/
-/* Funcion que encuentra los datos del de la ficha 			*/ 
-/*----------------------------------------------------------*/	
+/* Funcion que encuentra los datos del de la ficha 			*/
+/*----------------------------------------------------------*/
 function find_ficha_completa($id_ficha)
 {
   global $db;
-        $sql = $db->query("SELECT f.folio,fun.descripcion as funcion,fo.folio as num_queja,f.ficha_adjunto,
+  $sql = $db->query("SELECT f.folio,fun.descripcion as funcion,fo.folio as num_queja,f.ficha_adjunto,
        a2.nombre_area as area_solicitante,f.fecha_intervencion,f.resultado,f.documento_emitido,
        f.nombre_especialista,f.clave_documento,f.id_cat_funcion,f.id_area_solicitante,id_indicadores_pat,
        f.protocolo_estambul,f.id_ficha,fo.folio as exp_ficha,oc.descripcion as ocupacion,       
@@ -6348,12 +6344,12 @@ LEFT JOIN cat_persona_desaparecida d USING(id_cat_persona_desaparecida)
 
 
 /*----------------------------------------------------------*/
-/* Funcion que encuentra si existe un quejoso o agraviado 			*/ 
-/*----------------------------------------------------------*/	
-function find_by_id_persona($table,$quejoso,$nombre_id)
+/* Funcion que encuentra si existe un quejoso o agraviado 			*/
+/*----------------------------------------------------------*/
+function find_by_id_persona($table, $quejoso, $nombre_id)
 {
   global $db;
-        $sql = $db->query(" SELECT {$db->escape($nombre_id)} as id
+  $sql = $db->query(" SELECT {$db->escape($nombre_id)} as id
 FROM {$db->escape($table)} 
 WHERE CONCAT(IFNULL(	nombre	,''),IFNULL(	paterno	,''),IFNULL(	materno	,''),IFNULL(	id_cat_gen	,''),IFNULL(	edad	,''), IFNULL(	id_cat_nacionalidad	,''),
     IFNULL(	id_cat_mun	,''),IFNULL(	id_cat_escolaridad	,''),IFNULL(	id_cat_ocup	,''),IFNULL(	leer_escribir	,''),IFNULL(	id_cat_grupo_vuln	,''),
@@ -6365,12 +6361,12 @@ WHERE CONCAT(IFNULL(	nombre	,''),IFNULL(	paterno	,''),IFNULL(	materno	,''),IFNUL
 }
 
 /*----------------------------------------------------------*/
-/* Funcion que encuentra una sesion COTRAPEN especifica		*/ 
-/*----------------------------------------------------------*/	
+/* Funcion que encuentra una sesion COTRAPEN especifica		*/
+/*----------------------------------------------------------*/
 function find_by_id_sesionCotrapem($id_sesion)
 {
   global $db;
-        $sql = $db->query("SELECT id_sesion, folio, fecha, lugar, acuerdos
+  $sql = $db->query("SELECT id_sesion, folio, fecha, lugar, acuerdos
         FROM cotrapem
         WHERE id_sesion = '{$id_sesion}' LIMIT 1");
   if ($result = $db->fetch_assoc($sql))
@@ -6380,8 +6376,8 @@ function find_by_id_sesionCotrapem($id_sesion)
 }
 
 /*---------------------------------------------------------------*/
-/* Funcion que encuentra todas las actividades de COTRAPEN 		*/ 
-/*--------------------------------------------------------------*/	
+/* Funcion que encuentra todas las actividades de COTRAPEN 		*/
+/*--------------------------------------------------------------*/
 function find_all_actividadesCotrapem()
 {
   $sql = "SELECT ac.id_actividadCotrapem, ac.folio, ac.fecha, ac.lugar, ac.tipo_actividad, ac.area_responsable, a.nombre_area, ac.carpeta
@@ -6392,12 +6388,12 @@ function find_all_actividadesCotrapem()
 }
 
 /*---------------------------------------------------------------*/
-/* Funcion que encuentra una actividades de COTRAPEN 		*/ 
+/* Funcion que encuentra una actividades de COTRAPEN 		*/
 /*--------------------------------------------------------------*/
 function find_by_id_actividadCotrapem($id_sesion)
 {
   global $db;
-        $sql = $db->query("SELECT ac.id_actividadCotrapem, ac.folio, ac.tipo_actividad, ac.modalidad, ac.fecha, ac.municipio, ac.lugar,
+  $sql = $db->query("SELECT ac.id_actividadCotrapem, ac.folio, ac.tipo_actividad, ac.modalidad, ac.fecha, ac.municipio, ac.lugar,
         ac.instituciones_participantes, ac.publico_dirige, ac.hombres, ac.mujeres, ac.no_binarios, ac.total, ac.area_responsable, ac.observaciones, 
         m.descripcion as nombre_municipio, a.nombre_area
         FROM actividades_cotrapem ac
@@ -6419,7 +6415,7 @@ function find_all_accionesV($year)
           av.modalidad, av.observaciones, av.carpeta, av.creador, av.fecha_creacion 
           FROM acciones_vinculacion av
           LEFT JOIN cat_instituciones a ON a.id_cat_instituciones = av.inst_procedencia
-		  WHERE av.folio LIKE '%/".$year."-%';";
+		  WHERE av.folio LIKE '%/" . $year . "-%';";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -6429,7 +6425,7 @@ function find_all_accionesV($year)
 function find_by_accionV($id_accionV)
 {
   global $db;
-        $sql = $db->query("SELECT av.id_accionV, av.folio, av.fecha, av.lugar, av.nombre_actividad, av.descripcion, av.participantes,id_indicadores_pat,
+  $sql = $db->query("SELECT av.id_accionV, av.folio, av.fecha, av.lugar, av.nombre_actividad, av.descripcion, av.participantes,id_indicadores_pat,
         aut.descripcion as nombre_autoridad, av.modalidad, av.observaciones, av.inst_procedencia, av.carpeta, av.creador, av.fecha_creacion
         FROM acciones_vinculacion av
         LEFT JOIN cat_instituciones aut ON av.inst_procedencia = aut.id_cat_instituciones
@@ -6448,7 +6444,7 @@ function find_by_asistenes($id)
   global $db;
   $id = (int)$id;
   $sql = "SELECT nombre_participante,institucion_participante,id_cat_gen,b.descripcion as genero FROM rel_reuniones_instituciones_ud LEFT JOIN cat_genero b USING(id_cat_gen) WHERE id_reuniones_trabajo_ud='{$db->escape($id)}'";
-	$result = find_by_sql($sql);
+  $result = find_by_sql($sql);
   return $result;
 }
 
@@ -6525,7 +6521,7 @@ function find_all_otras_acciones($year)
           FROM otras_acciones oa
           LEFT JOIN cat_otras_acciones coa ON coa.id_cat_otra_accion = oa.accion
           LEFT JOIN area a ON a.id_area = oa.area_solicita 
-		  WHERE YEAR(fecha)= ".$year;
+		  WHERE YEAR(fecha)= " . $year;
   $result = find_by_sql($sql);
   return $result;
 }
@@ -6554,13 +6550,13 @@ function find_all_status($table)
 /*--------------------------------------------------------------*/
 /* Funcion para mostrar los acuerdos de recomendaciones*/
 /*--------------------------------------------------------------*/
-function find_acuerdo_rec($id,$tipo)
+function find_acuerdo_rec($id, $tipo)
 {
   global $db;
-   if($tipo=='g'){
-	$sql  = "SELECT * FROM acuerdos_recomendaciones  WHERE id_recom_general = '{$id}'";
-  }else{	
-	$sql  = "SELECT * FROM acuerdos_recomendaciones  WHERE id_recomendacion = '{$id}'";
+  if ($tipo == 'g') {
+    $sql  = "SELECT * FROM acuerdos_recomendaciones  WHERE id_recom_general = '{$id}'";
+  } else {
+    $sql  = "SELECT * FROM acuerdos_recomendaciones  WHERE id_recomendacion = '{$id}'";
   }
   return $db->query($sql);
 }
@@ -6577,7 +6573,7 @@ function find_all_accionesCSI($year)
           FROM acciones_sistemas a
           LEFT JOIN cat_tipo_accion_sistemas b USING(id_cat_tipo_accion_sistemas) 
           LEFT JOIN area c USING(id_area) 
-		  WHERE YEAR(fecha_accion)=".$year;
+		  WHERE YEAR(fecha_accion)=" . $year;
   $result = find_by_sql($sql);
   return $result;
 }
@@ -6588,9 +6584,9 @@ function find_all_accionesCSI($year)
 function count_by_reclasificacion($id_queja_date)
 {
   global $db;
-    $sql    = "SELECT COUNT(id_queja_date) as total FROM rel_queja_reclasificacion WHERE id_queja_date= " . $db->escape($id_queja_date);
-    $result = $db->query($sql);
-    return ($db->fetch_assoc($result));
+  $sql    = "SELECT COUNT(id_queja_date) as total FROM rel_queja_reclasificacion WHERE id_queja_date= " . $db->escape($id_queja_date);
+  $result = $db->query($sql);
+  return ($db->fetch_assoc($result));
 }
 
 /*--------------------------------------------------------------*/
@@ -6610,21 +6606,21 @@ function find_reclasificacion_queja($id)
 function count_by_clasificacion($id_queja_date)
 {
   global $db;
-    $sql    = "SELECT  sum(total) as total
+  $sql    = "SELECT  sum(total) as total
 				FROM (
-	SELECT COUNT(id_queja_date) as total FROM rel_queja_der_vuln WHERE id_queja_date=" . $db->escape($id_queja_date).
-" UNION
- SELECT COUNT(id_queja_date) as total FROM rel_queja_der_gral WHERE id_queja_date=" . $db->escape($id_queja_date).
-") a ";
-    $result = $db->query($sql);
-    return ($db->fetch_assoc($result));
+	SELECT COUNT(id_queja_date) as total FROM rel_queja_der_vuln WHERE id_queja_date=" . $db->escape($id_queja_date) .
+    " UNION
+ SELECT COUNT(id_queja_date) as total FROM rel_queja_der_gral WHERE id_queja_date=" . $db->escape($id_queja_date) .
+    ") a ";
+  $result = $db->query($sql);
+  return ($db->fetch_assoc($result));
 }
 
 
 /*--------------------------------------------------*/
 /* Funcion que encuentra todas las correspondencias */
 /*--------------------------------------------------*/
-function find_all_env_correspondenciaExter($area,$year)
+function find_all_env_correspondenciaExter($area, $year)
 {
   $sql = "SELECT 
 	id_correspondencia_externa,
@@ -6639,8 +6635,8 @@ function find_all_env_correspondenciaExter($area,$year)
     quien_realizo
 FROM correspondencia_externa a
 LEFT JOIN `area` b ON a.`id_area_creacion`=b.`id_area` 
-WHERE id_area_creacion=".$area."
-  AND YEAR(fecha_oficio)= '".$year."'
+WHERE id_area_creacion=" . $area . "
+  AND YEAR(fecha_oficio)= '" . $year . "'
 ORDER BY fecha_oficio DESC";
   $result = find_by_sql($sql);
   return $result;
@@ -6695,9 +6691,9 @@ function find_by_solicitud($id)
 /* Funcion que encuentra el total de oficios internos no atendidos  */
 /*----------------------------------------------------------------------------------*/
 function count_oficiosInter($area)
-{  
+{
   global $db;
-  $sql    = "SELECT COUNT(id_env_corresp) as total FROM `envio_correspondencia` WHERE fecha is null AND se_turna_a_area=".$area;
+  $sql    = "SELECT COUNT(id_env_corresp) as total FROM `envio_correspondencia` WHERE fecha is null AND se_turna_a_area=" . $area;
   $result = $db->query($sql);
   return ($db->fetch_assoc($result));
 }
@@ -6707,9 +6703,9 @@ function count_oficiosInter($area)
 /* Funcion que encuentra el total de oficios externos no atendidos  */
 /*----------------------------------------------------------------------------------*/
 function count_oficiosExt($area)
-{  
+{
   global $db;
-  $sql    = "SELECT COUNT(id_correspondencia) as total FROM `correspondencia` WHERE fecha_seguimiento is null AND area_creacion=".$area;
+  $sql    = "SELECT COUNT(id_correspondencia) as total FROM `correspondencia` WHERE fecha_seguimiento is null AND area_creacion=" . $area;
   $result = $db->query($sql);
   return ($db->fetch_assoc($result));
 }
@@ -6723,10 +6719,10 @@ function estadoProcesal_estQ($year)
   $sql  = "SELECT a.id_cat_est_procesal, IFNULL(a.descripcion,'Sin Estado Procesal') as nombre_estado, COUNT(q.id_queja_date) as total, a.color_estadistica
 			FROM quejas_dates q 
 			LEFT JOIN cat_est_procesal a ON(q.estado_procesal=a.id_cat_est_procesal) ";
-	if((int) $year > 0){
-	$sql .= " WHERE q.folio_queja LIKE '%/{$year}-%' ";
-}
-		$sql .= "GROUP BY a.id_cat_est_procesal;";
+  if ((int) $year > 0) {
+    $sql .= " WHERE q.folio_queja LIKE '%/{$year}-%' ";
+  }
+  $sql .= "GROUP BY a.id_cat_est_procesal;";
   return find_by_sql($sql);
 }
 /*----------------------------------------------------------------------------------*/
@@ -6738,10 +6734,10 @@ function resolucion_estQ($year)
   $sql  = "SELECT a.id_cat_tipo_res, IFNULL(a.descripcion,'Sin Resolución') as nombre_resolucion, COUNT(q.id_queja_date) as total, a.color_estadistica
 			FROM quejas_dates q 
 			LEFT JOIN cat_tipo_res a ON(a.id_cat_tipo_res=q.id_tipo_resolucion) ";
-	if((int) $year > 0){
-	$sql .= " WHERE q.folio_queja LIKE '%/{$year}-%' ";
-}
-		$sql .= "GROUP BY a.id_cat_tipo_res;";
+  if ((int) $year > 0) {
+    $sql .= " WHERE q.folio_queja LIKE '%/{$year}-%' ";
+  }
+  $sql .= "GROUP BY a.id_cat_tipo_res;";
   return find_by_sql($sql);
 }
 
@@ -6785,15 +6781,15 @@ function find_by_tipo($id)
 /*--------------------------------------------------*/
 /* Funcion que encuentra todas las correspondencias */
 /*--------------------------------------------------*/
-function find_all_elemcursos($id,$id_name,$tabla,$relacion,$campo)
+function find_all_elemcursos($id, $id_name, $tabla, $relacion, $campo)
 {
   $sql = "SELECT
-			a.id_".$relacion.",
-			".$campo.", 
+			a.id_" . $relacion . ",
+			" . $campo . ", 
 			b.`descripcion` as nombre
-		FROM ".$relacion." a
-		LEFT JOIN ".$tabla." b USING(".$campo.")
-		WHERE ".$id_name."=".$id;
+		FROM " . $relacion . " a
+		LEFT JOIN " . $tabla . " b USING(" . $campo . ")
+		WHERE " . $id_name . "=" . $id;
   $result = find_by_sql($sql);
   return $result;
 }
@@ -6803,11 +6799,11 @@ function find_all_elemcursos($id,$id_name,$tabla,$relacion,$campo)
 /*------------------------------------------------------------------------*/
 /* Funcion para contar los ID de algun campo para saber su cantidad total en el ejercio*/
 /*------------------------------------------------------------------------*/
-function count_by_id_anio($table, $nombre_id,$folio,$year)
+function count_by_id_anio($table, $nombre_id, $folio, $year)
 {
   global $db;
   if (tableExists($table)) {
-    $sql    = "SELECT COUNT(" . $db->escape($nombre_id) . ") AS total FROM " . $db->escape($table). " WHERE {$folio} LIKE '%/{$year}-%' ";;
+    $sql    = "SELECT COUNT(" . $db->escape($nombre_id) . ") AS total FROM " . $db->escape($table) . " WHERE {$folio} LIKE '%/{$year}-%' ";;
     $result = $db->query($sql);
     return ($db->fetch_assoc($result));
   }
@@ -6832,22 +6828,22 @@ ORDER by SUBSTRING(numero_recomendacion,5);";
 /*--------------------------------------------------------------*/
 /* Funcion para encontrar en una tabla toda la informacion de un ejercico
 /*--------------------------------------------------------------*/
-function find_all_year($table,$folio,$year)
+function find_all_year($table, $folio, $year)
 {
   global $db;
   if (tableExists($table)) {
     //return find_by_sql("SELECT * FROM " . $db->escape($table)." WHERE {$folio} LIKE '%/{$year}-%' ");
-    return find_by_sql("SELECT * FROM " . $db->escape($table)." WHERE {$folio} LIKE '{$year}%' ORDER BY {$folio} DESC");
+    return find_by_sql("SELECT * FROM " . $db->escape($table) . " WHERE {$folio} LIKE '{$year}%' ORDER BY {$folio} DESC");
   }
 }
 /*--------------------------------------------------------------*/
 /* Funcion para encontrar en una tabla toda la informacion de un ejercico
 /*--------------------------------------------------------------*/
-function find_data_year($table,$folio,$year)
+function find_data_year($table, $folio, $year)
 {
   global $db;
   if (tableExists($table)) {
-    return find_by_sql("SELECT * FROM " . $db->escape($table)." WHERE {$folio} LIKE '%{$year}%' ");
+    return find_by_sql("SELECT * FROM " . $db->escape($table) . " WHERE {$folio} LIKE '%{$year}%' ");
   }
 }
 /*--------------------------------------------------------------*/
@@ -6856,9 +6852,8 @@ function find_data_year($table,$folio,$year)
 function find_all_sai($year)
 {
   global $db;
-    //return find_by_sql("SELECT * FROM solicitudes_informacion WHERE fecha_presentacion LIKE '{$year}%' ORDER BY fecha_presentacion ");
-    return find_by_sql("SELECT * FROM solicitudes_informacion WHERE folio_solicitud LIKE '1603528{$year}%' ORDER BY fecha_presentacion ");
-
+  //return find_by_sql("SELECT * FROM solicitudes_informacion WHERE fecha_presentacion LIKE '{$year}%' ORDER BY fecha_presentacion ");
+  return find_by_sql("SELECT * FROM solicitudes_informacion WHERE folio_solicitud LIKE '1603528{$year}%' ORDER BY fecha_presentacion ");
 }
 
 /*--------------------------------------------------------------*/
@@ -6867,7 +6862,7 @@ function find_all_sai($year)
 function find_all_curso()
 {
   global $db;
-    return find_by_sql("SELECT 
+  return find_by_sql("SELECT 
 id_cursos_diplomados,
 folio,
 id_cat_ejes_estrategicos,
@@ -6900,7 +6895,6 @@ LEFT JOIN area d ON(a.id_area_responsable=d.id_area)
 LEFT JOIN cat_modalidad e USING(id_cat_modalidad)
 LEFT JOIN cat_tipo_actividad f USING(id_cat_tipo_actividad)
 LEFT JOIN cat_categoria_actividad g USING(id_cat_categoria_actividad)");
-
 }
 
 
@@ -7014,15 +7008,15 @@ WHERE id_area_responsable={$area};";
 /*--------------------------------------------------*/
 /* Funcion que encuentra todas los elementos de los indicadores */
 /*--------------------------------------------------*/
-function find_all_elemts_indicadores($id,$tabla,$relacion)
+function find_all_elemts_indicadores($id, $tabla, $relacion)
 {
   $sql = "SELECT
-			a.id_".$relacion.",
+			a.id_" . $relacion . ",
 			b.`descripcion` as nombre
-		FROM ".$relacion." a
-		LEFT JOIN ".$tabla." b USING(id_".$tabla.")
-		WHERE id_indicadores_pat=".$id;
-		
+		FROM " . $relacion . " a
+		LEFT JOIN " . $tabla . " b USING(id_" . $tabla . ")
+		WHERE id_indicadores_pat=" . $id;
+
   $result = find_by_sql($sql);
   return $result;
 }
@@ -7034,7 +7028,7 @@ function find_all_elemts_indicadores($id,$tabla,$relacion)
 function find_all_certificaciones()
 {
   global $db;
-    return find_by_sql("SELECT 
+  return find_by_sql("SELECT 
 id_certificaciones,
 folio,
 id_cat_ejes_estrategicos,
@@ -7053,7 +7047,6 @@ FROM certificaciones a
 LEFT JOIN cat_ejes_estrategicos b USING(id_cat_ejes_estrategicos)
 LEFT JOIN cat_agendas c USING(id_cat_agendas)
 LEFT JOIN area d ON(a.id_area_responsable=d.id_area) ");
-
 }
 
 /*--------------------------------------------------------------*/
@@ -7099,7 +7092,7 @@ LEFT JOIN area d ON(a.id_area_responsable=d.id_area)
 /* Funcion para mostrar los datos del certifoicacion
 /*--------------------------------------------------------------*/
 
-function find_by_id_calendarizacion($id,$tipo)
+function find_by_id_calendarizacion($id, $tipo)
 {
   global $db;
   $id = (int)$id;
@@ -7120,7 +7113,7 @@ SUM(valor_noviembre) as valor_noviembre,
 SUM(valor_diciembre) as valor_diciembre
 
 FROM `rel_indicadores_calendarizacion`
-WHERE tipo='".$tipo."'
+WHERE tipo='" . $tipo . "'
   AND id_indicadores_pat='{$db->escape($id)}' AND vigente=1 GROUP BY id_indicadores_pat LIMIT 1");
   if ($result = $db->fetch_assoc($sql))
     return $result;
@@ -7128,7 +7121,7 @@ WHERE tipo='".$tipo."'
     return null;
 }
 
-function find_by_id_calendarizacionReal($id,$tipo)
+function find_by_id_calendarizacionReal($id, $tipo)
 {
   global $db;
   $id = (int)$id;
@@ -7150,7 +7143,7 @@ id_indicadores_pat,
 	  valor_diciembre
       ) as valor_real
 FROM `rel_indicadores_calendarizacion`
-WHERE tipo='".$tipo."'
+WHERE tipo='" . $tipo . "'
   AND id_indicadores_pat='{$db->escape($id)}' AND vigente=1 
    GROUP BY id_indicadores_pat,fecha_actualización ");
   if ($result = $db->fetch_assoc($sql))
@@ -7167,7 +7160,7 @@ WHERE tipo='".$tipo."'
 function find_all_grupos_trabajo()
 {
   global $db;
-    return find_by_sql(" SELECT
+  return find_by_sql(" SELECT
 	id_grupos_trabajo,
   folio,
   id_cat_tipo_accion,
@@ -7183,7 +7176,6 @@ function find_all_grupos_trabajo()
   observaciones
 FROM `grupos_trabajo` a
 LEFT JOIN cat_tipo_accion b USING(id_cat_tipo_accion)");
-
 }
 
 
@@ -7195,11 +7187,10 @@ LEFT JOIN cat_tipo_accion b USING(id_cat_tipo_accion)");
 function find_by_participantes($id)
 {
   global $db;
-    return find_by_sql("SELECT
+  return find_by_sql("SELECT
 *
 FROM `rel_grupos_trabajo_participantes`
 WHERE id_grupos_trabajo='{$db->escape($id)}'");
- 
 }
 
 
@@ -7211,7 +7202,7 @@ WHERE id_grupos_trabajo='{$db->escape($id)}'");
 function find_all_colecciones()
 {
   global $db;
-    return find_by_sql(" SELECT
+  return find_by_sql(" SELECT
 	id_colecciones_estudios,
   folio,
   nombre_coleccion,
@@ -7223,7 +7214,6 @@ function find_all_colecciones()
   observaciones
 FROM `colecciones_estudios` a
 LEFT JOIN area b ON(id_area= id_area_responsable)");
-
 }
 
 
@@ -7233,7 +7223,7 @@ LEFT JOIN area b ON(id_area= id_area_responsable)");
 /*--------------------------------------------------------------*/
 function find_by_colecciones($id)
 {
-    global $db;
+  global $db;
   $id = (int)$id;
   $sql = $db->query("SELECT
 	id_colecciones_estudios,
@@ -7253,25 +7243,23 @@ WHERE id_colecciones_estudios='{$db->escape($id)}'  LIMIT 1");
   else
     return null;
 
-    return find_by_sql();
-
+  // return find_by_sql();
 }
 
 
 /*--------------------------------------------------------------*/
 /* Funcion para encontrar ......................
 /*--------------------------------------------------------------*/
-function find_all_indicadores_real($table,$campo,$fecha,$id_indicador,$accion_realizar)
+function find_all_indicadores_real($table, $campo, $fecha, $id_indicador, $accion_realizar)
 {
   global $db;
-    return find_by_sql(" SELECT 
-".$accion_realizar."(".$campo.") as total, 
-MONTH(".$fecha.") as mes 
-FROM ".$table."
-WHERE id_indicadores_pat=".$id_indicador."
- AND YEAR(".$fecha.")=2024
- GROUP BY MONTH(".$fecha.") ORDER BY MONTH (".$fecha.") ");
-
+  return find_by_sql(" SELECT 
+" . $accion_realizar . "(" . $campo . ") as total, 
+MONTH(" . $fecha . ") as mes 
+FROM " . $table . "
+WHERE id_indicadores_pat=" . $id_indicador . "
+ AND YEAR(" . $fecha . ")=2024
+ GROUP BY MONTH(" . $fecha . ") ORDER BY MONTH (" . $fecha . ") ");
 }
 
 
@@ -7279,11 +7267,11 @@ WHERE id_indicadores_pat=".$id_indicador."
 /*--------------------------------------------------------------*/
 /* Funcion para encontrar ......................
 /*--------------------------------------------------------------*/
-function find_all_actividades_especiales($table, $order,$id_area)
+function find_all_actividades_especiales($table, $order, $id_area)
 {
   global $db;
   if (tableExists($table)) {
-    return find_by_sql("SELECT * FROM " . $db->escape($table) . " WHERE id_area_responsable=".$db->escape($id_area)." ORDER BY " . $db->escape($order));
+    return find_by_sql("SELECT * FROM " . $db->escape($table) . " WHERE id_area_responsable=" . $db->escape($id_area) . " ORDER BY " . $db->escape($order));
   }
 }
 
@@ -7291,7 +7279,7 @@ function find_all_actividades_especiales($table, $order,$id_area)
 /*--------------------------------------------------*/
 /* Funcion que encuentra los indicadores del PAT */
 /*--------------------------------------------------*/
-function find_all_pat_area($area,$table_relacionada)
+function find_all_pat_area($area, $table_relacionada)
 {
   $sql = "SELECT
  id_indicadores_pat,
@@ -7306,7 +7294,7 @@ WHERE id_area_responsable={$area}   AND table_relacionada='{$table_relacionada}'
 
 
 /*----------------------------------------------*/
-/* Funcion que encuentra todos los contactos de politicas    */ 
+/* Funcion que encuentra todos los contactos de politicas    */
 /*----------------------------------------------*/
 function find_all_contactos()
 {
@@ -7319,7 +7307,7 @@ function find_all_contactos()
 }
 
 /*----------------------------------------------*/
-/* Funcion que encuentra las autoridades que tienen contacto de politicas    */ 
+/* Funcion que encuentra las autoridades que tienen contacto de politicas    */
 /*----------------------------------------------*/
 function find_autoridades_monitoreo()
 {
@@ -7335,7 +7323,7 @@ GROUP BY id_cat_aut; ";
 /*------------------------------------------------------------------*/
 /* Ver los oficios enviados y de seguimiento del monitoreo de politicas */
 /*------------------------------------------------------------------*/
-function find_oficios_monitoreo($id,$tipo)
+function find_oficios_monitoreo($id, $tipo)
 {
   $sql = "SELECT 
   c.id_cat_aut,
@@ -7349,7 +7337,7 @@ tipo_documento
  FROM rel_monitoreo_oficios a 
  LEFT JOIN contactos_politicas b USING(id_contactos_politicas) 
  LEFT JOIN cat_autoridades c USING(id_cat_aut)
- WHERE id_monitoreo_politicas= ".$id." AND tipo_documento='".$tipo."'";
+ WHERE id_monitoreo_politicas= " . $id . " AND tipo_documento='" . $tipo . "'";
 
   $result = find_by_sql($sql);
   return $result;
@@ -7362,10 +7350,10 @@ tipo_documento
 function count_by_monitoreo($idMon, $idCon)
 {
   global $db;
-    $sql    = "SELECT COUNT(id_rel_monitoreo_oficios) as total FROM rel_monitoreo_oficios a 
- WHERE id_monitoreo_politicas= ".$idMon." AND tipo_documento='seg' AND id_contactos_politicas= " . $idCon;
-    $result = $db->query($sql);
-    return ($db->fetch_assoc($result));
+  $sql    = "SELECT COUNT(id_rel_monitoreo_oficios) as total FROM rel_monitoreo_oficios a 
+ WHERE id_monitoreo_politicas= " . $idMon . " AND tipo_documento='seg' AND id_contactos_politicas= " . $idCon;
+  $result = $db->query($sql);
+  return ($db->fetch_assoc($result));
 }
 
 
@@ -7382,8 +7370,8 @@ function find_by_violentadosAct($tableA, $tableB, $id)
 	LEFT JOIN {$db->escape($tableB)} 
 	USING(id_{$db->escape($tableB)}) 
 	WHERE id_queja_date='{$db->escape($id)}' ";
-	
-	$result = find_by_sql($sql);
+
+  $result = find_by_sql($sql);
   return $result;
 }
 
@@ -7398,8 +7386,7 @@ function find_by_violentadosAct($tableA, $tableB, $id)
 function find_by_participantesReunVin($id)
 {
   global $db;
-    return find_by_sql("SELECT *FROM `rel_reuniones_vinculacion_asistentes` WHERE id_reuniones_vinculacion='{$db->escape($id)}'");
- 
+  return find_by_sql("SELECT *FROM `rel_reuniones_vinculacion_asistentes` WHERE id_reuniones_vinculacion='{$db->escape($id)}'");
 }
 
 
@@ -7420,39 +7407,38 @@ WHERE id_area_responsable={$area};";
   return $result;
 }
 
-function find_all_indicadores_duoreal($table,$campo,$fecha,$id_indicador,$accion_realizar)
+function find_all_indicadores_duoreal($table, $campo, $fecha, $id_indicador, $accion_realizar)
 {
-	global $db;	
-	$tablas = explode(";", $table);
-	$campos = explode(";", $campo);
-	$fechas = explode(";", $fecha);
-	$acciones = explode(";", $accion_realizar);
-	
-	
-	
-	$sql = "SELECT 
+  global $db;
+  $tablas = explode(";", $table);
+  $campos = explode(";", $campo);
+  $fechas = explode(";", $fecha);
+  $acciones = explode(";", $accion_realizar);
+
+
+
+  $sql = "SELECT 
 SUM(total) as total,
 mes
 FROM
 ( 
 	(SELECT 
-	".$acciones[0]."(".$campos[0].") as total, 
-	MONTH(".$fechas[0].") as mes 
-	FROM ".$tablas[0]."
-	WHERE id_indicadores_pat=".$id_indicador." AND YEAR(".$fechas[0].")=2024
-	 GROUP BY MONTH(".$fechas[0].") ORDER BY MONTH (".$fechas[0].") )
+	" . $acciones[0] . "(" . $campos[0] . ") as total, 
+	MONTH(" . $fechas[0] . ") as mes 
+	FROM " . $tablas[0] . "
+	WHERE id_indicadores_pat=" . $id_indicador . " AND YEAR(" . $fechas[0] . ")=2024
+	 GROUP BY MONTH(" . $fechas[0] . ") ORDER BY MONTH (" . $fechas[0] . ") )
 	 UNION
 	 (SELECT 
-	".$acciones[1]."(".$campos[1].") as total, 
-	MONTH(".$fechas[1].") as mes 
-	FROM ".$tablas[1]."
-	WHERE id_indicadores_pat=".$id_indicador." AND YEAR(".$fechas[1].")=2024
-	 GROUP BY MONTH(".$fechas[1].") ORDER BY MONTH (".$fechas[1].") )
+	" . $acciones[1] . "(" . $campos[1] . ") as total, 
+	MONTH(" . $fechas[1] . ") as mes 
+	FROM " . $tablas[1] . "
+	WHERE id_indicadores_pat=" . $id_indicador . " AND YEAR(" . $fechas[1] . ")=2024
+	 GROUP BY MONTH(" . $fechas[1] . ") ORDER BY MONTH (" . $fechas[1] . ") )
 ) as a
 GROUP BY mes;";
   $result = find_by_sql($sql);
   return $result;
-	
 }
 
 
@@ -7465,7 +7451,7 @@ GROUP BY mes;";
 function find_all_atencion_seguimiento($id_area)
 {
   global $db;
-    return find_by_sql("SELECT
+  return find_by_sql("SELECT
  id_atencion_seguimiento,
   folio,
   mes,
@@ -7476,7 +7462,6 @@ function find_all_atencion_seguimiento($id_area)
  LEFT JOIN cat_tipo_atencion USING(id_cat_tipo_atencion) 
  WHERE id_area={$id_area}
  GROUP BY id_atencion_seguimiento");
-
 }
 
 /*--------------------------------------------------------------*/
@@ -7484,17 +7469,15 @@ function find_all_atencion_seguimiento($id_area)
 /*--------------------------------------------------------------*/
 function find_by_atencion_seguimiento($id)
 {
-	
-	
-	 $sql = "SELECT
+
+
+  $sql = "SELECT
  *
  FROM rel_accion_atencion 
  LEFT JOIN cat_tipo_atencion USING(id_cat_tipo_atencion) 
 WHERE id_atencion_seguimiento={$id};";
   $result = find_by_sql($sql);
   return $result;
-  
-
 }
 
 /*--------------------------------------------------------------*/
@@ -7523,7 +7506,7 @@ ORDER BY d.`jerarquia`";
 function find_modulos_areas($id)
 {
   global $db;
-    return find_by_sql("SELECT 
+  return find_by_sql("SELECT 
 id_area,
 nombre_area,
 nombre_modulo,
@@ -7537,55 +7520,51 @@ FROM `rel_area_mudulos` a
 LEFT JOIN area b USING(id_area)
 WHERE a.id_area = {$db->escape($id)}
  	AND a.`activo`=1 ");
-
 }
 
 /*--------------------------------------------------------------*/
 /* Funcion para encontrar los registros de cada modulo
 /*--------------------------------------------------------------*/
-function find_datos_modulos($table,$id_name,$fecha, $year)
+function find_datos_modulos($table, $id_name, $fecha, $year)
 {
   global $db;
-    return find_by_sql("SELECT  COUNT({$id_name}) as total,  MONTH({$fecha}) as mes
+  return find_by_sql("SELECT  COUNT({$id_name}) as total,  MONTH({$fecha}) as mes
 FROM {$table}
 WHERE YEAR({$fecha})={$year}
 GROUP BY MONTH({$fecha}) ORDER BY MONTH({$fecha})");
-
 }
 
 /*--------------------------------------------------------------*/
 /* Funcion para encontrar los registros de cada modulo con area especifica
 /*--------------------------------------------------------------*/
-function find_datos_modulosF($table,$id_name,$fecha,$area_campo,$area, $year)
+function find_datos_modulosF($table, $id_name, $fecha, $area_campo, $area, $year)
 {
   global $db;
-    return find_by_sql("SELECT  COUNT({$id_name}) as total,  MONTH({$fecha}) as mes
+  return find_by_sql("SELECT  COUNT({$id_name}) as total,  MONTH({$fecha}) as mes
 FROM {$table}
 WHERE YEAR({$fecha})={$year} AND {$area_campo}={$area}
 GROUP BY MONTH({$fecha}) ORDER BY MONTH({$fecha})");
-
 }
 
 /*--------------------------------------------------------------*/
 /* Funcion para encontrar los registros de cada modulo con campo mes y ejercicio
 /*--------------------------------------------------------------*/
-function find_datos_modulosP($table,$id_name,$mes,$ejercicio, $year)
+function find_datos_modulosP($table, $id_name, $mes, $ejercicio, $year)
 {
   global $db;
-    return find_by_sql("SELECT  COUNT({$id_name}) as total,  {$mes} as mes
+  return find_by_sql("SELECT  COUNT({$id_name}) as total,  {$mes} as mes
 FROM {$table}
 WHERE {$ejercicio}={$year} 
 GROUP BY {$mes} ORDER BY {$mes}");
-
 }
 
 /*--------------------------------------------------------------*/
 /* Funcion para encontrar los registros de cada modulo con para orientaciones y canalizaciones
 /*--------------------------------------------------------------*/
-function find_datos_modulosOC($table,$id_name,$fecha,$area,$extra,$year)
+function find_datos_modulosOC($table, $id_name, $fecha, $area, $extra, $year)
 {
   global $db;
-    return find_by_sql("SELECT
+  return find_by_sql("SELECT
 COUNT({$id_name}) as total,
 MONTH({$fecha}) as mes
 FROM `{$table}` o
@@ -7595,7 +7574,6 @@ LEFT JOIN `area` e ON(d.id_area= e.id_area)
 WHERE YEAR({$fecha})={$year}  AND d.`id_area`={$area} {$extra}
 GROUP BY  MONTH({$fecha})
 ORDER BY MONTH({$fecha});");
-
 }
 
 
@@ -7628,18 +7606,17 @@ ORDER BY YEAR(fecha_recibido) ;";
 function find_by_lastcorrespondencia($year)
 {
   global $db;
-  
-    $sql = $db->query("SELECT 
+
+  $sql = $db->query("SELECT 
 	fecha_recibido,nombre_remitente,nombre_institucion,observaciones, b.`nombre_area` as area_turnada,IFNULL(num_oficio_recepcion,'') as num_oficio_recepcion
 FROM correspondencia a
 LEFT JOIN `area` b ON(a.`id_area_turnada`=b.`id_area`)
 WHERE YEAR(fecha_recibido)={$db->escape($year)}
 ORDER BY fecha_recibido DESC LIMIT 1;");
-    if ($result = $db->fetch_assoc($sql))
-      return $result;
-    else
-      return null;
-  
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
 }
 
 
@@ -7647,7 +7624,7 @@ ORDER BY fecha_recibido DESC LIMIT 1;");
 /*--------------------------------------------------------------*/
 /*  Funcion para encontrar todos los oficios emitidos por presidencia
 /*--------------------------------------------------------------*/
-function find_all_correspondenciaPte($area,$year)
+function find_all_correspondenciaPte($area, $year)
 {
   $sql = "SELECT c.id_env_corresp as id,
 			   '1' as id_tipo,
