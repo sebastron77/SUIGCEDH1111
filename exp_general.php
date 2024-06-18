@@ -249,16 +249,27 @@ if (isset($_POST['update'])) {
                             </div>
                         </div>
                     </div>
-                    <div style="margin-bottom: 1%; margin-top: -1%">
-                        <span class="material-symbols-rounded" style="margin-top: 2%; color: #3a3d44;">work</span>
-                        <p style="font-size: 15px; font-weight: bold; margin-top: -27px; margin-left: 2%">EXPEDIENTE INTERNO</p>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div style="margin-bottom: 1%; margin-top: -1%">
+                                <span class="material-symbols-rounded" style="margin-top: 2%; color: #3a3d44;">work</span>
+                                <p style="font-size: 15px; font-weight: bold; margin-top: -27px; margin-left: 5%">EXPEDIENTE INTERNO</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="display: flex; align-items: center; margin-top: -6px">
+                            <span class="material-symbols-outlined" style="color: #370494">
+                                history
+                            </span>
+                            <a href="hist_puestos.php?id=<?php echo (int)$_GET['id'] ?>" style="margin-left: 10px; color: #370494; font-weight: bold;">HISTORIAL INTERNO DE PUESTOS</a>
+                        </div>
+
                     </div>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="id_cat_puestos" class="control-label">Puesto</label>
-                                <select class="form-control" name="id_cat_puestos" >
-								<option value="">Escoge una opción</option>
+                                <select class="form-control" name="id_cat_puestos">
+                                    <option value="">Escoge una opción</option>
                                     <?php foreach ($cat_puestos as $datos) : ?>
                                         <option <?php if ($datos['id_cat_puestos'] === $e_detalle['id_cat_puestos']) echo 'selected="selected"'; ?> value="<?php echo $datos['id_cat_puestos']; ?>"><?php echo ucwords($datos['descripcion']); ?></option>
                                     <?php endforeach; ?>
@@ -268,8 +279,8 @@ if (isset($_POST['update'])) {
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="id_area">Área</label>
-                                <select class="form-control" name="id_area" >
-								<option value="0">Escoge una opción</option>
+                                <select class="form-control" name="id_area">
+                                    <option value="0">Escoge una opción</option>
                                     <?php foreach ($areas as $area) : ?>
                                         <option <?php if ($area['id_area'] === $e_detalle['id_area']) echo 'selected="selected"'; ?> value="<?php echo $area['id_area']; ?>"><?php echo ucwords($area['nombre_area']); ?></option>
                                     <?php endforeach; ?>
@@ -279,7 +290,7 @@ if (isset($_POST['update'])) {
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="tipo_inte">Tipo de Integrante</label>
-                                <select class="form-control" name="tipo_inte" >
+                                <select class="form-control" name="tipo_inte">
                                     <option value="">Escoge una opción</option>
                                     <?php foreach ($tipo_int as $inte) : ?>
                                         <option <?php if ($inte['id_tipo_integrante'] === $e_detalle['id_tipo_integrante']) echo 'selected="selected"'; ?> value="<?php echo $inte['id_tipo_integrante']; ?>"><?php echo ucwords($inte['descripcion']); ?></option>
@@ -301,8 +312,8 @@ if (isset($_POST['update'])) {
                                 <input type="text" class="form-control" name="niv_puesto" value="<?php echo ($e_detalle['niv_puesto']); ?>">
                             </div>
                         </div>
-                        <?php $v1 = "$" . ($e_detalle['monto_bruto']==''?"0.00":$e_detalle['monto_bruto']);
-                        $v2 = "$" . ($e_detalle['monto_neto']==''?"0.00":$e_detalle['monto_neto']); ?>
+                        <?php $v1 = "$" . ($e_detalle['monto_bruto'] == '' ? "0.00" : $e_detalle['monto_bruto']);
+                        $v2 = "$" . ($e_detalle['monto_neto'] == '' ? "0.00" : $e_detalle['monto_neto']); ?>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label for="monto_bruto">Monto Mensual (Bruto)</label>

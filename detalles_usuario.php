@@ -59,10 +59,10 @@ endif;
               <th style=" width: 1%;">#</th>
               <th style="width: 10%;">Nombre(s)</th>
               <th style="width: 10%;">Apellidos</th>
-              <th style="width: 15%;">Área y Cargo</th>
+              <th style="width: 20%;">Área y Cargo</th>
               <th style="width: 1%;">Estatus</th>
               <?php if ($otro == 1 || $nivel_user == 1 || ($nivel_user == 14 )) : ?>
-                <th style="width: 5%;" class="text-center">Acciones</th>
+                <th style="width: 1%;" class="text-center">Acciones</th>
               <?php endif ?>
             </tr>
           </thead>

@@ -24,7 +24,7 @@ if ($nivel_user == 22) {
 
 if ($nivel_user > 3 && $nivel_user < 4) :
     redirect('home.php');
-	
+
 endif;
 if ($nivel_user > 4 && $nivel_user < 7) :
     redirect('home.php');
@@ -40,7 +40,7 @@ if ($nivel_user > 22) :
 endif;
 
 $id_folio = last_id_folios();
-$inticadores_pat = find_all_pat_area(17,'sesiones');
+$inticadores_pat = find_all_pat_area(17, 'sesiones');
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <?php header('Content-type: text/html; charset=utf-8');
@@ -166,21 +166,21 @@ include_once('layouts/header.php'); ?>
                             <label for="nota_sesion">Notas de sesión</label>
                             <textarea class="form-control" name="nota_sesion" id="nota_sesion" cols="10" rows="5"></textarea>
                         </div>
-                    </div> 
-<div class="col-md-3">
+                    </div>
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="id_indicadores_pat">Definición del Indicador</label>
-                            <select class="form-control form-select" name="id_indicadores_pat" >
+                            <select class="form-control form-select" name="id_indicadores_pat">
                                 <option value="">Selecciona Indicador</option>
                                 <?php foreach ($inticadores_pat as $datos) : ?>
-                                    <option   value="<?php echo $datos['id_indicadores_pat']; ?>"><?php echo ucwords($datos['definicion_indicador']); ?></option>									
+                                    <option value="<?php echo $datos['id_indicadores_pat']; ?>"><?php echo ucwords($datos['definicion_indicador']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
 
 
-					
+
                 </div>
                 <div class="form-group clearfix">
                     <a href="sesiones.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">

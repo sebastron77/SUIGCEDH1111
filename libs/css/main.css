@@ -71,7 +71,16 @@ a {
   border-radius: 15px;
   color: #3a3d44;
 }
-
+.login-page7 {
+  width: 820px;
+  height: 320px;
+  margin: 7% auto;
+  padding: 0 20px;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 15px;
+  color: #3a3d44;
+}
 .login-page .text-center {
   margin-bottom: 10px;
 }

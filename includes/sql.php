@@ -5924,9 +5924,6 @@ function find_all_exp_lab($id)
   return $result;
 }
 
-
-
-
 /*------------------------------------------------------------------------*/
 /* Funcion para estadistica de mediacion-areas */
 /*------------------------------------------------------------------------*/
@@ -7576,7 +7573,6 @@ GROUP BY  MONTH({$fecha})
 ORDER BY MONTH({$fecha});");
 }
 
-
 function find_all_areasFull()
 {
   $sql = "SELECT * FROM area WHERE visible = 1 ORDER BY jerarquia ASC";
@@ -7599,7 +7595,6 @@ ORDER BY YEAR(fecha_recibido) ;";
   return $result;
 }
 
-
 /*--------------------------------------------------------------*/
 /*  Funcion para encontrar datos del ultimo ofiocio
 /*--------------------------------------------------------------*/
@@ -7619,45 +7614,36 @@ ORDER BY fecha_recibido DESC LIMIT 1;");
     return null;
 }
 
-
-
 /*--------------------------------------------------------------*/
 /*  Funcion para encontrar todos los oficios emitidos por presidencia
 /*--------------------------------------------------------------*/
 function find_all_correspondenciaPte($area, $year)
 {
-  $sql = "SELECT c.id_env_corresp as id,
-			   '1' as id_tipo,
-			   'Interno' as tipo_mail,
-			   c.folio,
-			   IFNULL(no_oficio, 'S/N') as no_oficio,
-			   fecha_emision,
-			   c.asunto,
-			   c.medio_envio,
-			   a.nombre_area  as area_turnada,
-			   IF(accion_realizada is null,'No','Si') as accion_realizada,
-			   IF(envio_oficialia=0,'No','Si') as envio_oficialia
-		FROM envio_correspondencia c
-		LEFT JOIN area a ON c.se_turna_a_area = a.id_area
-		WHERE area_creacion = '{$area}' AND
-			  YEAR (fecha_emision) = '{$year}'
-		UNION
-		SELECT id_correspondencia_externa as id,
-				'2' as id_tipo,
-				'Externo' as tipo_mail,
-			   folio,
-			   num_oficio as no_oficio,
-			   a.fecha_oficio as fecha_emision,
-			   asunto,
-			   medio_entrega as medio_envio,
-			   nombre_institucion  as area_turnada,
-			   '-' as accion_realizada,
-			   '0' as envio_oficialia
-		FROM correspondencia_externa a
+  $sql = "SELECT c.id_env_corresp as id, '1' as id_tipo, 'Interno' as tipo_mail, c.folio, IFNULL(no_oficio, 'S/N') as no_oficio, fecha_emision, c.asunto,
+          c.medio_envio,a.nombre_area  as area_turnada,IF(accion_realizada is null,'No','Si') as accion_realizada, 
+          IF(envio_oficialia=0,'No','Si') as envio_oficialia
+          FROM envio_correspondencia c
+          LEFT JOIN area a ON c.se_turna_a_area = a.id_area
+          WHERE area_creacion = '{$area}' AND YEAR (fecha_emision) = '{$year}'
+          UNION
+          SELECT id_correspondencia_externa as id, '2' as id_tipo, 'Externo' as tipo_mail, folio, num_oficio as no_oficio, a.fecha_oficio as fecha_emision,
+          asunto, medio_entrega as medio_envio, nombre_institucion  as area_turnada, '-' as accion_realizada, '0' as envio_oficialia
+          FROM correspondencia_externa a
+          WHERE id_area_creacion = '{$area}' AND YEAR (fecha_oficio) = '{$year}'
+          ORDER BY fecha_emision DESC";
+  $result = find_by_sql($sql);
+  return $result;
+}
 
-		WHERE id_area_creacion = '{$area}' AND
-			  YEAR (fecha_oficio) = '{$year}'
-		ORDER BY fecha_emision DESC";
+function find_by_hist_exp_int($id)
+{
+  global $db;
+  // $id = (int)$id;
+  $sql = "SELECT h.id_rel_hist_exp_int, h.id_detalle_usuario, h.clave, h.niv_puesto, a.nombre_area, p.descripcion as puesto
+          FROM rel_hist_exp_int h
+          LEFT JOIN area a ON a.id_area = h.id_area
+          LEFT JOIN cat_puestos p ON p.id_cat_puestos = h.id_cat_puestos
+          WHERE h.id_detalle_usuario = '{$db->escape($id)}'";
   $result = find_by_sql($sql);
   return $result;
 }
