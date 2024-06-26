@@ -20,6 +20,14 @@ function find_all_order($table, $order)
   }
 }
 
+function find_all_by($table, $id, $nombre_id)
+{
+  global $db;
+  if (tableExists($table)) {
+    return find_by_sql("SELECT * FROM " . $db->escape($table) . " WHERE " . $db->escape($nombre_id) . " = " . $db->escape($id));
+  }
+}
+
 function find_all_hecho_vuln()
 {
   $sql = "SELECT * FROM cat_hecho_vuln WHERE estatus=1 ORDER BY descripcion ASC";
@@ -7639,11 +7647,41 @@ function find_by_hist_exp_int($id)
 {
   global $db;
   // $id = (int)$id;
-  $sql = "SELECT h.id_rel_hist_exp_int, h.id_detalle_usuario, h.clave, h.niv_puesto, a.nombre_area, p.descripcion as puesto
+  $sql = "SELECT h.id_rel_hist_exp_int, h.id_detalle_usuario, h.clave, h.niv_puesto, h.fecha_inicio, h.fecha_conclusion, a.nombre_area, p.descripcion as puesto
           FROM rel_hist_exp_int h
           LEFT JOIN area a ON a.id_area = h.id_area
           LEFT JOIN cat_puestos p ON p.id_cat_puestos = h.id_cat_puestos
           WHERE h.id_detalle_usuario = '{$db->escape($id)}'";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+function find_by_id_detalle($id)
+{
+  global $db;
+  $id = (int)$id;
+  $sql = $db->query("SELECT d.nombre, d.apellidos, d.id_cat_gen, d.correo, d.id_cargo, d.estado, d.municipio, d.telefono, d.id_cat_puestos, d.id_area, 
+                      d.monto_bruto, d.monto_neto, d.id_tipo_integrante, d.clave, d.niv_puesto
+                      FROM detalles_usuario d
+                      LEFT JOIN cat_genero cg ON cg.id_cat_gen = d.id_cat_gen
+                      LEFT JOIN cat_municipios cm ON cm.id_cat_mun = d.municipio
+                      WHERE d.id_det_usuario = '{$db->escape($id)}' LIMIT 1");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
+}
+/*--------------------------------------------------------------*/
+/*  Funcion para encontrar todos los oficios emitidos por presidencia
+/*--------------------------------------------------------------*/
+function find_all_hist_exp_int($id)
+{
+  $sql = "SELECT h.clave, h.niv_puesto, h.fecha_inicio, h.fecha_conclusion, p.descripcion as puestos, a.nombre_area
+          FROM rel_hist_exp_int h
+          LEFT JOIN cat_puestos p ON p.id_cat_puestos = h.id_cat_puestos
+          LEFT JOIN area a ON a.id_area = h.id_area
+          WHERE h.id_detalle_usuario = '{$id}'
+          ORDER BY h.fecha_inicio DESC";
   $result = find_by_sql($sql);
   return $result;
 }

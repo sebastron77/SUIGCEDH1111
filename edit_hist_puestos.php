@@ -36,9 +36,12 @@ if (isset($_POST['edit_hist_puestos'])) {
         $id_area = remove_junk($db->escape(($_POST['id_area'])));
         $clave = remove_junk($db->escape(($_POST['clave'])));
         $niv_puesto = remove_junk($db->escape(($_POST['niv_puesto'])));
+        $fecha_inicio = $_POST['fecha_inicio'];
+        $fecha_conclusion = $_POST['fecha_conclusion'];
 
         $query  = "UPDATE rel_hist_exp_int SET ";
-        $query .= "id_cat_puestos='{$id_cat_puestos}', id_area='{$id_area}', clave='{$clave}', niv_puesto='{$niv_puesto}' ";
+        $query .= "id_cat_puestos='{$id_cat_puestos}', id_area='{$id_area}', clave='{$clave}', niv_puesto='{$niv_puesto}', fecha_inicio='{$fecha_inicio}',
+                    fecha_conclusion='{$fecha_conclusion}' ";
         $query .= "WHERE id_rel_hist_exp_int='{$db->escape($e_hist['id_rel_hist_exp_int'])}'";
         $result = $db->query($query);
 
@@ -94,16 +97,28 @@ include_once('layouts/header.php'); ?>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="clave" class="control-label">Clave</label>
-                        <input type="text" class="form-control" name="clave" value="<?php echo $e_hist['clave']?>">
+                        <input type="text" class="form-control" name="clave" value="<?php echo $e_hist['clave'] ?>">
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label for="niv_puesto" class="control-label">Nivel de Puesto</label>
-                        <input type="text" class="form-control" name="niv_puesto" value="<?php echo $e_hist['niv_puesto']?>">
+                        <input type="text" class="form-control" name="niv_puesto" value="<?php echo $e_hist['niv_puesto'] ?>">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="fecha_inicio">Fecha de Inicio</label>
+                        <input type="date" class="form-control" name="fecha_inicio" value="<?php echo $e_hist['fecha_inicio']?>" required>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="fecha_conclusion">Fecha de Conclusión</label>
+                        <input type="date" class="form-control" name="fecha_conclusion" value="<?php echo $e_hist['fecha_conclusion']?>" required>
                     </div>
                 </div>
             </div>

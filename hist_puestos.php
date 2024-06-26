@@ -43,13 +43,16 @@ if (isset($_POST['hist_puestos'])) {
     $id_area = $_POST['id_area'];
     $clave = $_POST['clave'];
     $niv_puesto = $_POST['niv_puesto'];
+    $fecha_inicio = $_POST['fecha_inicio'];
+    $fecha_conclusion = $_POST['fecha_conclusion'];
     $texto = "";
 
     for ($i = 0; $i < sizeof($id_cat_puestos); $i = $i + 1) {
         $query = "INSERT INTO rel_hist_exp_int (";
-        $query .= "id_detalle_usuario, id_cat_puestos, id_area, clave, niv_puesto, fecha_creacion";
+        $query .= "id_detalle_usuario, id_cat_puestos, id_area, clave, niv_puesto, fecha_inicio, fecha_conclusion, fecha_creacion";
         $query .= ") VALUES (";
-        $query .= " '{$idP}','{$id_cat_puestos[$i]}','{$id_area[$i]}','{$clave[$i]}','{$niv_puesto[$i]}', NOW()";
+        $query .= " '{$idP}','{$id_cat_puestos[$i]}','{$id_area[$i]}','{$clave[$i]}','{$niv_puesto[$i]}', '{$fecha_inicio[$i]}', '{$fecha_conclusion[$i]}',  
+                    NOW()";
         $query .= ")";
         $texto = $texto . $query;
         $x = $db->query($query);
@@ -71,7 +74,6 @@ if (isset($_POST['hist_puestos'])) {
 ?>
 
 <script type="text/javascript">
-
     $(document).ready(function() {
         $("#addRow").click(function() {
             var num = (document.getElementsByClassName("puesto").length) + 1;
@@ -115,7 +117,7 @@ if (isset($_POST['hist_puestos'])) {
             html += '           </div>';
             html += '       </div>';
             html += '   </div>';
-            html += '   <div class="row">';
+            html += '   <di class="row">';
             html += '       <div class="col-md-3">';
             html += '           <div class="form-group">';
             html += '               <label for="clave" class="control-label">Clave</label>';
@@ -126,6 +128,18 @@ if (isset($_POST['hist_puestos'])) {
             html += '           <div class="form-group">';
             html += '               <label for="niv_puesto" class="control-label">Nivel de Puesto</label>';
             html += '               <input type="text" class="form-control" name="niv_puesto[]">';
+            html += '           </div>';
+            html += '       </div>';
+            html += '       <div class="col-md-3">';
+            html += '           <div class="form-group">';
+            html += '               <label for="fecha_inicio">Fecha de Inicio</label>';
+            html += '               <input type="date" class="form-control" name="fecha_inicio[]" required>';
+            html += '           </div>';
+            html += '       </div>';
+            html += '       <div class="col-md-3">';
+            html += '           <div class="form-group">';
+            html += '               <label for="fecha_conclusion">Fecha de Conclusión</label>';
+            html += '               <input type="date" class="form-control" name="fecha_conclusion[]" required>';
             html += '           </div>';
             html += '       </div>';
             html += '   </div>';
@@ -203,6 +217,18 @@ if (isset($_POST['hist_puestos'])) {
                                 <input type="text" class="form-control" name="niv_puesto[]">
                             </div>
                         </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="fecha_inicio">Fecha de Inicio</label>
+                                <input type="date" class="form-control" name="fecha_inicio[]" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="fecha_conclusion">Fecha de Conclusión</label>
+                                <input type="date" class="form-control" name="fecha_conclusion[]" required>
+                            </div>
+                        </div>
                     </div>
                     <div class="row" id="newRow" style="margin-top: 3%;"></div>
                     <div class="form-group clearfix">
@@ -219,24 +245,28 @@ if (isset($_POST['hist_puestos'])) {
         <table class="table table-bordered table-striped" style="width: 100%; float: left;" id="tblProductos">
             <thead class="thead-purple" style="margin-top: -50px;">
                 <tr style="height: 10px;">
-                    <th colspan="5" style="text-align:center; font-size: 14px;">Expediente</th>
+                    <th colspan="7" style="text-align:center; font-size: 14px;">Expediente</th>
                 </tr>
                 <tr style="height: 10px;">
-                    <th style="width: 15%; font-size: 14px;">Puesto</th>
-                    <th style="width: 15%; font-size: 14px;">Área</th>
-                    <th style="width: 5%; font-size: 14px;">Clave</th>
-                    <th style="width: 5%; font-size: 14px;">Nivel de Puesto</th>
-                    <th style="width: 1%; font-size: 14px;">Editar</th>
+                    <th style="width: 10%; font-size: 14px;">Puesto</th>
+                    <th style="width: 10%; font-size: 14px;">Área</th>
+                    <th style="width: 1%; font-size: 14px;">Clave</th>
+                    <th style="width: 1%; font-size: 14px;">Nivel</th>
+                    <th style="width: 5%; font-size: 14px;">Inicio</th>
+                    <th style="width: 5%; font-size: 14px;">Concl.</th>
+                    <th style="width: 1%; font-size: 14px;"></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($hist_puestos as $hist) : ?>
                     <tr>
-                        <td style="font-size: 14px;"><?php echo $hist['puesto'] ?></td>
-                        <td style="font-size: 14px;"><?php echo $hist['nombre_area'] ?></td>
-                        <td style="font-size: 14px;"><?php echo $hist['clave'] ?></td>
-                        <td style="font-size: 14px;"><?php echo $hist['niv_puesto'] ?></td>
-                        <td style="font-size: 14px;" class="text-center">
+                        <td style="font-size: 13.5px;"><?php echo $hist['puesto'] ?></td>
+                        <td style="font-size: 13.5px;"><?php echo $hist['nombre_area'] ?></td>
+                        <td style="font-size: 13.5px;"><?php echo $hist['clave'] ?></td>
+                        <td style="font-size: 13.5px;"><?php echo $hist['niv_puesto'] ?></td>
+                        <td style="font-size: 13.5px;"><?php echo $hist['fecha_inicio'] ?></td>
+                        <td style="font-size: 13.5px;"><?php echo $hist['fecha_conclusion'] ?></td>
+                        <td style="font-size: 13.5px;" class="text-center">
                             <a href="edit_hist_puestos.php?id=<?php echo (int)$hist['id_rel_hist_exp_int']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip" style="height: 30px; width: 30px;"><span class="material-symbols-rounded" style="font-size: 18px; color: black; margin-top: 1px; margin-left: -3px;">edit</span>
                             </a>
                         </td>

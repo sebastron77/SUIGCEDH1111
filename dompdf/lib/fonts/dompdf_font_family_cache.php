@@ -86,4 +86,7 @@
   'questrial' => array(
     'normal' => $fontDir . '/questrial_normal_2eec9c3608961cbf4946070f667aada1',
   ),
+  'montserrat' => array(
+    '500' => $fontDir . '/montserrat_500_1236ec90acb329158f494b3fcb44327e',
+  ),
 ) ?>
