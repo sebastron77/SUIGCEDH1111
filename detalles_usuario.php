@@ -15,19 +15,19 @@ $otro = $busca_area['nivel_grupo'];
 $nivel_user = $user['user_level'];
 
 if ($nivel_user == 1) {
-    page_require_level_exacto(1);
+  page_require_level_exacto(1);
 }
 if ($nivel_user == 2) {
-    page_require_level_exacto(2);
+  page_require_level_exacto(2);
 }
 if ($nivel_user == 14) {
-    page_require_level_exacto(14);
+  page_require_level_exacto(14);
 }
 if ($nivel_user > 2 && $nivel_user < 14) :
-    redirect('home.php');
+  redirect('home.php');
 endif;
 if ($nivel_user > 14) :
-    redirect('home.php');
+  redirect('home.php');
 endif;
 
 ?>
@@ -48,8 +48,10 @@ endif;
           <span>Lista de Trabajadores de la CEDH</span>
         </strong>
         <?php if ($otro == 1 || $nivel_user == 1 || $nivel_user == 14) : ?>
-          <a href="add_detalle_usuario.php" class="btn btn-info pull-right">Agregar trabajador</a>
+          <a href="add_detalle_usuario.php" class="btn btn-info pull-right" style="margin-left:10px">Agregar trabajador</a>
+          <a href="ver_licencias_vigentes.php" class="btn btn-info pull-right" style="background: #5200C2; border-color: #5200C2;">Ver Licencias Vigentes</a>
         <?php endif ?>
+        <!-- <a href="ver_licencias" style="margin-left: 15%; margin-top: 10%">Ver información de licencias vigentes</a> -->
       </div>
 
       <div class="panel-body">
@@ -61,7 +63,7 @@ endif;
               <th style="width: 10%;">Apellidos</th>
               <th style="width: 20%;">Área y Cargo</th>
               <th style="width: 1%;">Estatus</th>
-              <?php if ($otro == 1 || $nivel_user == 1 || ($nivel_user == 14 )) : ?>
+              <?php if ($otro == 1 || $nivel_user == 1 || ($nivel_user == 14)) : ?>
                 <th style="width: 1%;" class="text-center">Acciones</th>
               <?php endif ?>
             </tr>
@@ -80,7 +82,7 @@ endif;
                     <span class="label label-danger"><?php echo "Inactivo"; ?></span>
                   <?php endif; ?>
                 </td>
-                <?php if ($otro == 1 || $nivel_user == 1 || ($nivel_user == 14 )) : ?>
+                <?php if ($otro == 1 || $nivel_user == 1 || ($nivel_user == 14)) : ?>
                   <td class="text-center">
                     <div class="btn-group">
                       <a href="ver_info_detalle.php?id=<?php echo (int)$a_detalle['detalleID']; ?>" class="btn btn-md btn-info" data-toggle="tooltip" title="Ver información" style="height: 40px">
@@ -98,7 +100,10 @@ endif;
                       <a href="exp_laboral.php?id=<?php echo (int)$a_detalle['detalleID']; ?>" class="btn btn-danger btn-md" style=" background: #7D74DB; border-color:#7D74DB; height: 40px" title="Expediente Laboral" data-toggle="tooltip">
                         <span class="material-symbols-rounded" style="font-size: 20px; color: white; margin-top: 5px;">work</span>
                       </a>&nbsp;
-                      <?php if (($nivel == 1) || ($nivel_user == 14 )): ?>
+                      <a href="licencias.php?id=<?php echo (int)$a_detalle['detalleID']; ?>" class="btn btn-danger btn-md" style=" background: #EB6EDE; border-color:#EB6EDE; height: 40px" title="Licencias" data-toggle="tooltip">
+                        <span class="material-symbols-rounded" style="font-size: 20px; color: white; margin-top: 5px;">calendar_clock</span>
+                      </a>&nbsp;
+                      <?php if (($nivel == 1) || ($nivel_user == 14)) : ?>
                         <?php if ($a_detalle['estatus_detalle'] == 0) : ?>
                           <a href="activate_detalle_usuario.php?id=<?php echo (int)$a_detalle['detalleID']; ?>" class="btn btn-success btn-md" title="Activar" data-toggle="tooltip" style="height: 40px">
                             <span class="material-symbols-rounded" style="font-size: 20px; color: white; margin-top: 5px;">check</span>

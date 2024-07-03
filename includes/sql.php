@@ -7685,3 +7685,43 @@ function find_all_hist_exp_int($id)
   $result = find_by_sql($sql);
   return $result;
 }
+
+function find_by_id_consec($id)
+{
+  global $db;
+  $id = (int)$id;
+  $sql = $db->query("SELECT no_consec, fecha_inicio, fecha_termino, terminado
+                      FROM rel_licencias_personal
+                      WHERE id_detalle_usuario = '{$db->escape($id)}' ORDER BY no_consec DESC LIMIT 1");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
+}
+
+function find_all_lic($id)
+{
+  $sql = "SELECT l.id_rel_licencia_personal, l.fecha_inicio, l.fecha_termino, l.no_dias, l.observaciones, l.documento, l.terminado,
+          cl.descripcion as tipo_lic
+          FROM rel_licencias_personal l
+          LEFT JOIN cat_licencias cl ON cl.id_cat_licencia = l.tipo_licencia
+          WHERE l.id_detalle_usuario = '{$id}'
+          ORDER BY l.fecha_termino DESC";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+function find_all_lic_vig()
+{
+  $sql = "SELECT l.id_rel_licencia_personal, l.no_consec, l.fecha_inicio, l.fecha_termino, l.no_dias, l.observaciones, l.documento, l.terminado, cl.descripcion as tipo_lic,
+                  d.nombre, d.apellidos
+          FROM rel_licencias_personal l
+          LEFT JOIN cat_licencias cl 
+          ON cl.id_cat_licencia = l.tipo_licencia
+          LEFT JOIN detalles_usuario d
+          ON d.id_det_usuario = l.id_detalle_usuario
+          WHERE l.terminado = 0
+          ORDER BY l.fecha_termino DESC";
+  $result = find_by_sql($sql);
+  return $result;
+}
