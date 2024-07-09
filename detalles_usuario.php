@@ -49,7 +49,7 @@ endif;
         </strong>
         <?php if ($otro == 1 || $nivel_user == 1 || $nivel_user == 14) : ?>
           <a href="add_detalle_usuario.php" class="btn btn-info pull-right" style="margin-left:10px">Agregar trabajador</a>
-          <a href="ver_licencias_vigentes.php" class="btn btn-info pull-right" style="background: #5200C2; border-color: #5200C2;">Ver Licencias Vigentes</a>
+          <a href="ver_licencias_vigentes.php" class="btn btn-info pull-right" style="background: #5f03df; border-color: #5f03df;">Ver Licencias Vigentes</a>
         <?php endif ?>
         <!-- <a href="ver_licencias" style="margin-left: 15%; margin-top: 10%">Ver información de licencias vigentes</a> -->
       </div>
@@ -58,11 +58,11 @@ endif;
         <table class="datatable table table-bordered table-striped">
           <thead class="thead-purple">
             <tr style="height: 10px;"">
-              <th style=" width: 1%;">#</th>
-              <th style="width: 10%;">Nombre(s)</th>
-              <th style="width: 10%;">Apellidos</th>
-              <th style="width: 20%;">Área y Cargo</th>
-              <th style="width: 1%;">Estatus</th>
+              <th class="text-center" style=" width: 1%;">#</th>
+              <th class="text-center" style="width: 5%;">Nombre(s)</th>
+              <th class="text-center" style="width: 5%;">Apellidos</th>
+              <th class="text-center" style="width: 20%;">Área y Cargo</th>
+              <th class="text-center" style="width: 1%;">Estatus</th>
               <?php if ($otro == 1 || $nivel_user == 1 || ($nivel_user == 14)) : ?>
                 <th style="width: 1%;" class="text-center">Acciones</th>
               <?php endif ?>
@@ -97,11 +97,14 @@ endif;
                       <a href="exp_ac_lab.php?id=<?php echo (int)$a_detalle['detalleID']; ?>" class="btn btn-danger btn-md" style=" background: #0F6466; border-color:#0F6466; height: 40px" title="Expediente Académico" data-toggle="tooltip">
                         <span class="material-symbols-rounded" style="font-size: 23px; color: white; margin-top: 5px;">school</span>
                       </a>&nbsp;
-                      <a href="exp_laboral.php?id=<?php echo (int)$a_detalle['detalleID']; ?>" class="btn btn-danger btn-md" style=" background: #7D74DB; border-color:#7D74DB; height: 40px" title="Expediente Laboral" data-toggle="tooltip">
+                      <a href="exp_laboral.php?id=<?php echo (int)$a_detalle['detalleID']; ?>" class="btn btn-danger btn-md" style=" background: #5347da; border-color:#5347da; height: 40px" title="Expediente Laboral" data-toggle="tooltip">
                         <span class="material-symbols-rounded" style="font-size: 20px; color: white; margin-top: 5px;">work</span>
                       </a>&nbsp;
-                      <a href="licencias.php?id=<?php echo (int)$a_detalle['detalleID']; ?>" class="btn btn-danger btn-md" style=" background: #EB6EDE; border-color:#EB6EDE; height: 40px" title="Licencias" data-toggle="tooltip">
+                      <a href="licencias.php?id=<?php echo (int)$a_detalle['detalleID']; ?>" class="btn btn-danger btn-md" style=" background: #e44cd5; border-color:#e44cd5; height: 40px" title="Licencias" data-toggle="tooltip">
                         <span class="material-symbols-rounded" style="font-size: 20px; color: white; margin-top: 5px;">calendar_clock</span>
+                      </a>&nbsp;
+                      <a href="vacaciones.php?id=<?php echo (int)$a_detalle['detalleID']; ?>" class="btn btn-danger btn-md" style=" background: #229df0; border-color:#229df0; height: 40px" title="Vacaciones" data-toggle="tooltip">
+                        <span class="material-symbols-rounded" style="font-size: 20px; color: white; margin-top: 5px;">beach_access</span>
                       </a>&nbsp;
                       <?php if (($nivel == 1) || ($nivel_user == 14)) : ?>
                         <?php if ($a_detalle['estatus_detalle'] == 0) : ?>

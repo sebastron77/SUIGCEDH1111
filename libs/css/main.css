@@ -212,7 +212,8 @@ dataTables_wrapper form-inline dt-bootstrap no-footer {
   z-index: 99;
   top: 0;
   left: 0;
-  background-color: rgb(255, 255, 255);
+  background: rgb(20,15,61);
+  background: linear-gradient(90deg, rgb(69, 2, 194)  0%, rgba(46,4,124,1) 60%, rgba(18,0,50,1) 100%);
   width: 100%;
   height: 65px;
   line-height: 65px;
@@ -233,7 +234,8 @@ header > .logo {
   display: inline-block;
   width: 260px;
   height: 100%;
-  background: #370494;
+  background: rgb(18,0,50);
+  background: linear-gradient(90deg, rgba(18,0,50,1) 0%, rgba(46,4,124,1) 50%, rgb(62, 1, 175) 100%);
   line-height: 20px;
   /* text-indent: 1px; */
 }
@@ -258,12 +260,18 @@ header > .logo {
   text-decoration: none;
   text-align: center;
   font-size: 15px;
-  color: #3a3d44;
+  color: #FFFFFF;
   position: relative;
   padding: 10px 30px 10px 10px;
   margin: 0;
-  background: #e3e3e3;
+  background: rgb(24, 0, 66);
   border-radius: 7px;
+  border: 2px solid rgb(63, 11, 151);
+  box-shadow: 0 0 3px rgb(63, 11, 151), 
+              0 0 3px rgb(63, 11, 151), 
+              0 0 3px rgb(63, 11, 151), 
+              0 0 3px rgb(63, 11, 151), 
+              0 0 3px rgb(63, 11, 151);
 }
 .info-menu li.profile a img {
   width: 30px;
@@ -327,7 +335,7 @@ header > .logo {
   display: block;
 }
 .sidebar ul li a:hover {
-  color: #7263f0;
+  color: #5240f5;
 }
 .sidebar ul li a,
 ul.submenu li a {
@@ -407,8 +415,8 @@ table tfoot tr td:last-child {
 a.btn.btn-info {
   font-size: 14px;
   color: rgb(255, 255, 255);
-  background: #215ba6;
-  border-color: #215ba6;
+  background: #0049be;
+  border-color: #0049be;
 }
 a.btn.btn-info:hover,
 .btn-info:focus,
@@ -416,12 +424,12 @@ a.btn.btn-info:hover,
 .btn-info:active,
 .btn-info.active {
   color: #fff;
-  background-color: #1f4c88;
-  border-color: #1f4c88;
+  background-color: #005aeb;
+  border-color: #005aeb;
 }
 a.btn.btn-warning {
   font-size: 14px;
-  background-color: #f2d43d;
+  background-color: #ffd500;
 }
 a.btn.btn-warning:hover,
 .btn-warning:focus,
@@ -429,8 +437,8 @@ a.btn.btn-warning:hover,
 .btn-warning:active,
 .btn-warning.active {
   color: #fff;
-  background-color: #d3b935;
-  border-color: #d3b935;
+  background-color: #fdf900;
+  border-color: #fdf900;
 }
 a.btn.btn-success {
   font-size: 14px;
@@ -489,11 +497,11 @@ label {
 }
 
 .label-success {
-  background-color: #56b856;
+  background-color: #35aa35;
 }
 
 .label-danger {
-  background-color: #d84b4b;
+  background-color: #d82929;
 }
 
 label.control-label {
@@ -598,14 +606,14 @@ a.btn.btn-secondary.active {
   border-color: #be4f44;
 }
 a.btn.btn-success {
-  background-color: #04897a;
+  background-color: #04894b;
 }
 a.btn.btn-success:hover,
 .btn-success:focus,
 .btn-success.focus,
 .btn-success:active,
 .btn-success.active {
-  background-color: #06685c;
+  background-color: #04894b;
 }
 
 .btn-excel {
@@ -865,7 +873,7 @@ span.red {
 
 div.alert.alert-success {
   font-size: 20px;
-  background: #7163f050;
+  background: rgba(113, 99, 240, 0.91);
   /* border-color: #176939; */
   color: white;
   border: 0px;
@@ -955,7 +963,8 @@ input:checked + .slider:before {
   background-color: #f2f2ff;
 }
 .thead-purple {
-  background-color: #7263f0;
+  background: rgb(20,15,61);
+  background: linear-gradient(90deg, rgba(20,15,61,1) 0%, rgb(65, 38, 163) 50%, rgb(69, 49, 212) 100%);
   color: white;
 }
 
@@ -989,7 +998,7 @@ input:checked + .slider:before {
   font-weight: 600;
 }
 .tile:hover .tile-tittle {
-  color: #7263f0;
+  color: #4f3bff;
 }
 .material-symbols-outlined {
   color: #455a64;
@@ -1004,10 +1013,10 @@ input:checked + .slider:before {
   padding-top: 22px;
 }
 .tile-icon:hover > span {
-  color: #7263f0;
+  color: #4f3bff;
 }
 .tile-icon:hover > svg {
-  fill: #7263f0;
+  fill: #4f3bff;
 }
 
 .fa,
@@ -1018,7 +1027,7 @@ input:checked + .slider:before {
 
 .tile:hover .tile-icon > i,
 .tile:hover .tile-icon > p {
-  color: #7263f0;
+  color: #4f3bff;
 }
 
 /*En tu hoja de estilos */
@@ -1069,7 +1078,7 @@ a:active {
   font-weight: 500;
 }
 .tileA:hover .tileA-tittle {
-  color: #7263f0;
+  color: rgb(76, 11, 187);
 }
 .material-symbols-outlined {
   color: #455a64;
@@ -1084,10 +1093,10 @@ a:active {
   padding-top: 2px;
 }
 .tileA-icon:hover > span {
-  color: #7263f0;
+  color: #4f3bff;
 }
 .tileA-icon:hover > svg {
-  fill: #7263f0;
+  fill: #4f3bff;
 }
 a.btn.btn-gre {
   font-size: 14px;

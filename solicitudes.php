@@ -18,7 +18,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 
 <?php include_once('layouts/header.php'); ?>
 
-<h1 style="color:#3A3D44; margin-left: 10px;">Áreas</h1>
+<h1 style="color:#3A3D44; text-align: center; font-size: 35px; margin-bottom: 2%;">ÁREAS DE LA CEDH</h1>
 
 <div class="row">
 	<div class="col-md-12">

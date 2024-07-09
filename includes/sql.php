@@ -7725,3 +7725,14 @@ function find_all_lic_vig()
   $result = find_by_sql($sql);
   return $result;
 }
+
+function find_all_vac($id)
+{
+  $sql = "SELECT rv.id_rel_vacaciones, rv.semana1_1, rv.semana1_2, rv.semana2_1, rv.semana2_2, rv.observaciones, cv.descripcion as periodo
+          FROM rel_vacaciones rv
+          LEFT JOIN cat_periodos_vac cv ON cv.id_cat_periodo_vac = rv.id_cat_periodo_vac
+          WHERE rv.id_detalle_usuario = '{$id}'
+          ORDER BY rv.fecha_creacion DESC";
+  $result = find_by_sql($sql);
+  return $result;
+}
