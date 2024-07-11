@@ -61,7 +61,8 @@ endif;
               <th class="text-center" style=" width: 1%;">#</th>
               <th class="text-center" style="width: 5%;">Nombre(s)</th>
               <th class="text-center" style="width: 5%;">Apellidos</th>
-              <th class="text-center" style="width: 20%;">Área y Cargo</th>
+              <th class="text-center" style="width: 10%;">Puesto</th>
+              <th class="text-center" style="width: 15%;">Área</th>
               <th class="text-center" style="width: 1%;">Estatus</th>
               <?php if ($otro == 1 || $nivel_user == 1 || ($nivel_user == 14)) : ?>
                 <th style="width: 1%;" class="text-center">Acciones</th>
@@ -74,7 +75,8 @@ endif;
                 <td class="text-center"><?php echo count_id(); ?></td>
                 <td><?php echo remove_junk(ucwords($a_detalle['nombre'])) ?></td>
                 <td><?php echo remove_junk(ucwords($a_detalle['apellidos'])) ?></td>
-                <td><?php echo remove_junk(ucwords($a_detalle['nombre_cargo'])) ?> - <?php echo remove_junk(ucwords($a_detalle['nombre_area'])) ?></td>
+                <td><?php echo remove_junk(ucwords($a_detalle['puesto'])) ?></td>
+                <td><?php echo remove_junk(ucwords($a_detalle['nombre_area'])) ?></td>
                 <td class="text-center">
                   <?php if ($a_detalle['estatus_detalle'] === '1') : ?>
                     <span class="label label-success"><?php echo "Activo"; ?></span>

@@ -278,7 +278,7 @@ if (isset($_POST['update'])) {
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="id_area">Área</label>
+                                <label for="id_area">Área de Adscripción</label>
                                 <select class="form-control" name="id_area">
                                     <option value="0">Escoge una opción</option>
                                     <?php foreach ($areas as $area) : ?>

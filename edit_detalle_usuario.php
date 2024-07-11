@@ -23,8 +23,8 @@ endif;
 ?>
 <?php
 $e_detalle = find_by_id('detalles_usuario', (int)$_GET['id'], 'id_det_usuario');
-$cargos = find_all_order('cargos','nombre_cargo');
-$areas = find_all_order('area','jerarquia');
+$cargos = find_all_order('cargos', 'nombre_cargo');
+$areas = find_all_order('area', 'jerarquia');
 $generos = find_all('cat_genero');
 if (!$e_detalle) {
     $session->msg("d", "id de usuario no encontrado.");
@@ -37,7 +37,7 @@ $cat_municipios = find_all_cat_municipios();
 
 <?php
 if (isset($_POST['update'])) {
-    $req_fields = array('nombre', 'apellidos', 'id_cat_gen', 'correo', 'cargo');
+    $req_fields = array('nombre', 'apellidos', 'id_cat_gen', 'correo');
     validate_fields($req_fields);
     if (empty($errors)) {
         $id = (int)$e_detalle['id_det_usuario'];
@@ -54,9 +54,17 @@ if (isset($_POST['update'])) {
         $municipio   = $db->escape($_POST['municipio']);
         $estado   = $db->escape($_POST['estado']);
 
-        $sql = "UPDATE detalles_usuario SET nombre='{$nombre}', apellidos='{$apellidos}', id_cat_gen='{$sexo}', correo='{$correo}', 
-		id_cargo={$cargo}, curp='$curp', rfc='{$rfc}', 
-		calle_num='{$calle_num}', colonia='{$colonia}', municipio='{$municipio}', estado='{$estado}', telefono='{$telefono}' WHERE id_det_usuario='{$db->escape($id)}'";
+        if ($nivel_user == 1) {
+            $sql = "UPDATE detalles_usuario SET nombre='{$nombre}', apellidos='{$apellidos}', id_cat_gen='{$sexo}', correo='{$correo}', id_cargo={$cargo}, 
+                            curp='$curp', rfc='{$rfc}', calle_num='{$calle_num}', colonia='{$colonia}', municipio='{$municipio}', estado='{$estado}', 
+                            telefono='{$telefono}' WHERE id_det_usuario='{$db->escape($id)}'";
+        }
+
+        if ($nivel_user != 1) {
+            $sql = "UPDATE detalles_usuario SET nombre='{$nombre}', apellidos='{$apellidos}', id_cat_gen='{$sexo}', correo='{$correo}', curp='$curp', 
+                            rfc='{$rfc}', calle_num='{$calle_num}', colonia='{$colonia}', municipio='{$municipio}', estado='{$estado}', telefono='{$telefono}' WHERE id_det_usuario='{$db->escape($id)}'";
+        }
+
         $result = $db->query($sql);
         if ($result && $db->affected_rows() === 1) {
             $session->msg('s', "Información Actualizada ");
@@ -98,6 +106,7 @@ if (isset($_POST['update'])) {
                                 <input type="text" class="form-control" name="apellidos" value="<?php echo ($e_detalle['apellidos']); ?>" required>
                             </div>
                         </div>
+                        <?php if ($nivel_user == 1) : ?>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="cargo">Cargo</label>
@@ -114,15 +123,15 @@ if (isset($_POST['update'])) {
                                 </select>
                             </div>
                         </div>
+                        <?php endif; ?>
                         <div class="col-md-2">
-						
-						<label for="id_cat_gen">Género</label>
-                                <select class="form-control" name="id_cat_gen">
-                                    <option value="">Escoge una opción</option>
-                                    <?php foreach ($generos as $genero): ?>
-                                        <option <?php if ($e_detalle['id_cat_gen'] === $genero['id_cat_gen']) echo 'selected="selected"'; ?> value="<?php echo $genero['id_cat_gen']; ?>"><?php echo ucwords($genero['descripcion']); ?></option>
-                                    <?php endforeach; ?>
-                                </select>                              
+                            <label for="id_cat_gen">Género</label>
+                            <select class="form-control" name="id_cat_gen">
+                                <option value="">Escoge una opción</option>
+                                <?php foreach ($generos as $genero) : ?>
+                                    <option <?php if ($e_detalle['id_cat_gen'] === $genero['id_cat_gen']) echo 'selected="selected"'; ?> value="<?php echo $genero['id_cat_gen']; ?>"><?php echo ucwords($genero['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
@@ -168,7 +177,7 @@ if (isset($_POST['update'])) {
                                     <?php foreach ($cat_municipios as $municipio) : ?>
                                         <option <?php if ($municipio['id_cat_mun'] === $e_detalle['municipio'])
                                                     echo 'selected="selected"'; ?> value="<?php echo $municipio['id_cat_mun']; ?>">
-                                                    <?php echo ucwords($municipio['descripcion']) ?>
+                                            <?php echo ucwords($municipio['descripcion']) ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
@@ -180,7 +189,7 @@ if (isset($_POST['update'])) {
                                 <input type="text" class="form-control" value="<?php echo ($e_detalle['estado']); ?>" name="estado">
                             </div>
                         </div>
-                       
+
                     </div>
                     <div class="form-group clearfix">
                         <a href="detalles_usuario.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">

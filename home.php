@@ -13,7 +13,8 @@ if (!$session->isUserLoggedIn(true)) {
   <div class="col-md-12">
     <div class="panel" style="background-color: #1E2630; border-radius: 15px;">
       <div class="jumbotron text-center"
-        style="background: #7263F0; border-radius: 15px; border: 1px solid rgb(114, 99, 240);">
+        style="background: rgb(18,0,50);
+background: radial-gradient(circle, rgba(18,0,50,1) 0%, rgba(46,4,124,1) 100%); border-radius: 15px; border: 1px;">
         <h1 style="color: white;">Página principal</h1>
         <h4 style="color: white">Sistema Único de Información y Gestión de la CEDH (SUIGCEDH)</h4>
       </div>

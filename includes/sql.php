@@ -752,8 +752,16 @@ function find_all_trabajadores()
 {
   global $db;
   $results = array();
-  $sql = "SELECT d.id_det_usuario as detalleID,d.nombre,d.apellidos,d.correo,d.id_cargo,d.estatus_detalle,c.id_cargos,c.nombre_cargo,c.id_area,a.id_area,a.nombre_area ";
-  $sql .= "FROM detalles_usuario d LEFT JOIN cargos c ON c.id_cargos = d.id_cargo LEFT JOIN area a ON a.id_area = c.id_area ORDER BY d.nombre";
+  $sql = "SELECT d.id_det_usuario as detalleID, d.nombre, d.apellidos, d.correo, d.id_cargo, d.estatus_detalle, c.id_cargos, c.nombre_cargo, c.id_area, 
+                  a.id_area, a.nombre_area, p.descripcion as puesto ";
+  $sql .= "FROM detalles_usuario d ";
+  $sql .= "LEFT JOIN cargos c ";
+  $sql .= "ON c.id_cargos = d.id_cargo ";
+  $sql .= "LEFT JOIN area a ";
+  $sql .= "ON a.id_area = c.id_area ";
+  $sql .= "LEFT JOIN cat_puestos p ";
+  $sql .= "ON p.id_cat_puestos = d.id_cat_puestos ";
+  $sql .= "ORDER BY d.nombre";
   $result = find_by_sql($sql);
   return $result;
 }
