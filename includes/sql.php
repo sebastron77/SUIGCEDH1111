@@ -7744,3 +7744,12 @@ function find_all_vac($id)
   $result = find_by_sql($sql);
   return $result;
 }
+
+function update_colum($table, $nombre_id, $id , $col)
+{
+  global $db;
+  $sql = "UPDATE $table SET $col = NULL";
+  $sql .= " WHERE $nombre_id =" . $db->escape($id);
+  $db->query($sql);
+  return ($db->affected_rows() >= 1) ? true : false;
+}

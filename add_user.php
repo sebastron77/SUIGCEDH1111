@@ -19,32 +19,30 @@ if (isset($_POST['add_user'])) {
     $password   = remove_junk($db->escape($_POST['contraseña']));
     $user_level = (int)$db->escape($_POST['level']);
     $password = sha1($password);
-	
-	//valido que el usuario no exista
-	$userOld = search_user($username);
-	
-	if($userOld['id_user'] > 0){
-		  $session->msg('d', "El Nombre de Usuario '".$username."' ya se encuentra asignado, por favor asigne uno diferente");		  
-		  redirect('add_user.php', false);
-	}else{
-		 $query = "INSERT INTO users (";
-		$query .= "id_detalle_user,username,password,user_level,status";
-		$query .= ") VALUES (";
-		$query .= " '{$detalle}', '{$username}', '{$password}', '{$user_level}','1'";
-		$query .= ")";
-		if ($db->query($query)) {
-		  //sucess
-		  $session->msg('s', " La cuenta de usuario ha sido creada con éxito.");
-		  insertAccion($user['id_user'], '"'.$user['username'].'" agregó el usuario: '.$username.'.', 1);
-		  redirect('add_user.php', false);
-		} else {
-		  //failed
-		  $session->msg('d', ' No se pudo crear la cuenta.');
-		  redirect('add_user.php', false);
-		}
-	}
-	
-	
+
+    //valido que el usuario no exista
+    $userOld = search_user($username);
+
+    if ($userOld['id_user'] > 0) {
+      $session->msg('d', "El Nombre de Usuario '" . $username . "' ya se encuentra asignado, por favor asigne uno diferente");
+      redirect('add_user.php', false);
+    } else {
+      $query = "INSERT INTO users (";
+      $query .= "id_detalle_user,username,password,user_level,status";
+      $query .= ") VALUES (";
+      $query .= " '{$detalle}', '{$username}', '{$password}', '{$user_level}','1'";
+      $query .= ")";
+      if ($db->query($query)) {
+        //sucess
+        $session->msg('s', " La cuenta de usuario ha sido creada con éxito.");
+        insertAccion($user['id_user'], '"' . $user['username'] . '" agregó el usuario: ' . $username . '.', 1);
+        redirect('add_user.php', false);
+      } else {
+        //failed
+        $session->msg('d', ' No se pudo crear la cuenta.');
+        redirect('add_user.php', false);
+      }
+    }
   } else {
     $session->msg("d", $errors);
     redirect('add_user.php', false);
@@ -67,9 +65,14 @@ if (isset($_POST['add_user'])) {
           <div class="form-group">
             <label for="level">Trabajador</label>
             <select class="form-control" name="detalle-usuario">
-			<option value="">Selecione Trabajador </option>
+              <option value="">Selecione Trabajador </option>
               <?php foreach ($trabajadores as $trabajador) : ?>
-                <option value="<?php echo $trabajador['detalleID']; ?>"><?php echo ucwords($trabajador['nombre']); ?> <?php echo ucwords($trabajador['apellidos']); ?></option>
+                <?php if ($trabajador['id_cargo'] == '') : ?>
+                  <option style="color: red" value="<?php echo $trabajador['detalleID']; ?>"><?php echo ucwords($trabajador['nombre']); ?> <?php echo ucwords($trabajador['apellidos']); ?></option>
+                <?php endif; ?>
+                <?php if ($trabajador['id_cargo'] != '') : ?>
+                  <option value="<?php echo $trabajador['detalleID']; ?>"><?php echo ucwords($trabajador['nombre']); ?> <?php echo ucwords($trabajador['apellidos']); ?></option>
+                <?php endif; ?>
               <?php endforeach; ?>
             </select>
           </div>

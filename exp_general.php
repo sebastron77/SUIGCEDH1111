@@ -47,8 +47,8 @@ if (isset($_POST['update'])) {
         $clave   = $db->escape($_POST['clave']);
         $niv_puesto   = $db->escape($_POST['niv_puesto']);
 
-        $carpeta_trabajador = $nombre . ' ' . $apellidos;
-        $carpeta = 'uploads/personal/expediente/' . $carpeta_trabajador;
+        // $carpeta_trabajador = $nombre . ' ' . $apellidos;
+        $carpeta = 'uploads/personal/expediente/' . $id;
 
         if (!is_dir($carpeta)) {
             mkdir($carpeta, 0777, true);
@@ -144,7 +144,7 @@ if (isset($_POST['update'])) {
             insertAccion($user['id_user'], '"' . $user['username'] . '" actualizó expediente laboral al trabajador(a): ' . $nombre . ' ' . $apellidos . '.', 2);
             redirect('exp_general.php?id=' . (int)$e_detalle['id_det_usuario'], false);
         } else {
-            $session->msg('d', ' Lo sentimos, no se pudo actualizar el expediente.' . $sql);
+            $session->msg('d', ' Lo sentimos, no se pudo actualizar el expediente. ' . $sql);
             redirect('exp_general.php?id=' . (int)$e_detalle['id_det_usuario'], false);
         }
     } else {
@@ -155,7 +155,6 @@ if (isset($_POST['update'])) {
 ?>
 <?php include_once('layouts/header.php'); ?>
 <div class="row">
-
     <div class="col-md-12"> <?php echo display_msg($msg); ?> </div>
     <div class="col-md-12">
         <div class="panel panel-default">
@@ -197,8 +196,15 @@ if (isset($_POST['update'])) {
                                 <label for="acta_nacimiento">Acta de Nacimiento</label>
                                 <input type="file" accept="application/pdf" class="form-control" name="acta_nacimiento" id="acta_nacimiento">
                                 <label style="font-size:12px; color:#E3054F;">Archivo Actual:
-                                    <?php echo remove_junk($e_detalle['acta_nacimiento']); ?>
+                                    <a target="_blank" href="/suigcedh/uploads/personal/expediente/<?php echo $e_detalle['id_det_usuario'] . '/' . $e_detalle['acta_nacimiento']; ?>" style="font-size:14px; color: #1248c7; text-decoration: underline;"><?php echo remove_junk($e_detalle['acta_nacimiento']); ?></a>
                                 </label>
+                                <?php if($e_detalle['acta_nacimiento'] != ''): ?>
+                                <a href="delete_archivo.php?file=<?php echo $e_detalle['acta_nacimiento']; ?>&id=<?php echo (int)$e_detalle['id_det_usuario']; ?>&col=acta_nacimiento" onclick="return confirm('¿Estás seguro de que quieres eliminar este archivo?');">
+                                    <span class="material-symbols-outlined">
+                                        delete
+                                    </span>
+                                </a>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -206,8 +212,15 @@ if (isset($_POST['update'])) {
                                 <label for="carta_no_ant">Carta de No Antecedentes Penales</label>
                                 <input type="file" accept="application/pdf" class="form-control" name="carta_no_ant" id="carta_no_ant">
                                 <label style="font-size:12px; color:#E3054F;">Archivo Actual:
-                                    <?php echo remove_junk($e_detalle['carta_no_ant']); ?>
+                                    <a target="_blank" href="/suigcedh/uploads/personal/expediente/<?php echo $e_detalle['id_det_usuario'] . '/' . $e_detalle['carta_no_ant']; ?>" style="font-size:14px; color: #1248c7; text-decoration: underline;"><?php echo remove_junk($e_detalle['carta_no_ant']); ?></a>
                                 </label>
+                                <?php if($e_detalle['carta_no_ant'] != ''): ?>
+                                <a href="delete_archivo.php?file=<?php echo $e_detalle['carta_no_ant']; ?>&id=<?php echo (int)$e_detalle['id_det_usuario']; ?>&col=carta_no_ant" onclick="return confirm('¿Estás seguro de que quieres eliminar este archivo?');">
+                                    <span class="material-symbols-outlined">
+                                        delete
+                                    </span>
+                                </a>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -215,8 +228,15 @@ if (isset($_POST['update'])) {
                                 <label for="const_no_in">Constancia de No Inhabilitación</label>
                                 <input type="file" accept="application/pdf" class="form-control" name="const_no_in" id="const_no_in">
                                 <label style="font-size:12px; color:#E3054F;">Archivo Actual:
-                                    <?php echo remove_junk($e_detalle['const_no_in']); ?>
+                                    <a target="_blank" href="/suigcedh/uploads/personal/expediente/<?php echo $e_detalle['id_det_usuario'] . '/' . $e_detalle['const_no_in']; ?>" style="font-size:14px; color: #1248c7; text-decoration: underline;"><?php echo remove_junk($e_detalle['const_no_in']); ?></a>
                                 </label>
+                                <?php if($e_detalle['const_no_in'] != ''): ?>
+                                <a href="delete_archivo.php?file=<?php echo $e_detalle['const_no_in']; ?>&id=<?php echo (int)$e_detalle['id_det_usuario']; ?>&col=const_no_in" onclick="return confirm('¿Estás seguro de que quieres eliminar este archivo?');">
+                                    <span class="material-symbols-outlined">
+                                        delete
+                                    </span>
+                                </a>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -224,8 +244,15 @@ if (isset($_POST['update'])) {
                                 <label for="comp_dom">Comprobante de Domicilio</label>
                                 <input type="file" accept="application/pdf" class="form-control" name="comp_dom" id="comp_dom">
                                 <label style="font-size:12px; color:#E3054F;">Archivo Actual:
-                                    <?php echo remove_junk($e_detalle['comp_dom']); ?>
+                                    <a target="_blank" href="/suigcedh/uploads/personal/expediente/<?php echo $e_detalle['id_det_usuario'] . '/' . $e_detalle['comp_dom']; ?>" style="font-size:14px; color: #1248c7; text-decoration: underline;"><?php echo remove_junk($e_detalle['comp_dom']); ?></a>
                                 </label>
+                                <?php if($e_detalle['comp_dom'] != ''): ?>
+                                <a href="delete_archivo.php?file=<?php echo $e_detalle['comp_dom']; ?>&id=<?php echo (int)$e_detalle['id_det_usuario']; ?>&col=comp_dom" onclick="return confirm('¿Estás seguro de que quieres eliminar este archivo?');">
+                                    <span class="material-symbols-outlined">
+                                        delete
+                                    </span>
+                                </a>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -235,8 +262,15 @@ if (isset($_POST['update'])) {
                                 <label for="carta_rec1">Carta de Recpmendación (1)</label>
                                 <input type="file" accept="application/pdf" class="form-control" name="carta_rec1" id="carta_rec1">
                                 <label style="font-size:12px; color:#E3054F;">Archivo Actual:
-                                    <?php echo remove_junk($e_detalle['carta_rec1']); ?>
+                                    <a target="_blank" href="/suigcedh/uploads/personal/expediente/<?php echo $e_detalle['id_det_usuario'] . '/' . $e_detalle['carta_rec1']; ?>" style="font-size:14px; color: #1248c7; text-decoration: underline;"><?php echo remove_junk($e_detalle['carta_rec1']); ?></a>
                                 </label>
+                                <?php if($e_detalle['carta_rec1'] != ''): ?>
+                                <a href="delete_archivo.php?file=<?php echo $e_detalle['carta_rec1']; ?>&id=<?php echo (int)$e_detalle['id_det_usuario']; ?>&col=carta_rec1" onclick="return confirm('¿Estás seguro de que quieres eliminar este archivo?');">
+                                    <span class="material-symbols-outlined">
+                                        delete
+                                    </span>
+                                </a>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -244,8 +278,15 @@ if (isset($_POST['update'])) {
                                 <label for="carta_rec2">Carta de Recomendación (2)</label>
                                 <input type="file" accept="application/pdf" class="form-control" name="carta_rec2" id="carta_rec2">
                                 <label style="font-size:12px; color:#E3054F;">Archivo Actual:
-                                    <?php echo remove_junk($e_detalle['carta_rec2']); ?>
+                                    <a target="_blank" href="/suigcedh/uploads/personal/expediente/<?php echo $e_detalle['id_det_usuario'] . '/' . $e_detalle['carta_rec2']; ?>" style="font-size:14px; color: #1248c7; text-decoration: underline;"><?php echo remove_junk($e_detalle['carta_rec2']); ?></a>
                                 </label>
+                                <?php if($e_detalle['carta_rec2'] != ''): ?>
+                                <a href="delete_archivo.php?file=<?php echo $e_detalle['carta_rec2']; ?>&id=<?php echo (int)$e_detalle['id_det_usuario']; ?>&col=carta_rec2" onclick="return confirm('¿Estás seguro de que quieres eliminar este archivo?');">
+                                    <span class="material-symbols-outlined">
+                                        delete
+                                    </span>
+                                </a>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
