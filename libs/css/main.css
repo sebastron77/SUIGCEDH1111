@@ -499,7 +499,9 @@ label {
 .label-success {
   background-color: #35aa35;
 }
-
+.label-licencia {
+  background-color: #ff9900;
+}
 .label-danger {
   background-color: #d82929;
 }

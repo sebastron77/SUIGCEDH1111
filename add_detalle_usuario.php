@@ -25,6 +25,8 @@ endif;
 
 $cargos = find_all_cargos2();
 $generos = find_all('cat_genero');
+$cat_puestos = find_all('cat_puestos');
+$areas = find_all('area');
 ?>
 <?php header('Content-type: text/html; charset=utf-8');
 if (isset($_POST['add_detalle_usuario'])) {
@@ -38,22 +40,21 @@ if (isset($_POST['add_detalle_usuario'])) {
         $id_cat_gen   = remove_junk($db->escape($_POST['id_cat_gen']));
         $correo   = remove_junk($db->escape($_POST['correo']));
         $cargo   = (int)$db->escape($_POST['cargo']);
+        $puesto   = $db->escape($_POST['id_cat_puestos']);
+        $id_area   = $db->escape($_POST['id_area']);
 
-        if ($nivel_user == 1) {
-            $query = "INSERT INTO detalles_usuario (";
-            $query .= "nombre, apellidos, id_cat_gen, correo, id_cargo, estatus_detalle";
-            $query .= ") VALUES (";
-            $query .= " '{$nombre}', '{$apellidos}', '{$id_cat_gen}', '{$correo}', {$cargo}, '1'";
-            $query .= ")";
+        $query = "INSERT INTO detalles_usuario (";
+        $query .= "nombre,apellidos,id_cat_gen,correo,id_cargo,id_area,estatus_detalle,curp";
+        if ($puesto !== '') {
+            $query .= ", id_cat_puestos";
         }
 
-        if ($nivel_user != 1) {
-            $query = "INSERT INTO detalles_usuario (";
-            $query .= "nombre,apellidos, id_cat_gen, correo, estatus_detalle";
-            $query .= ") VALUES (";
-            $query .= " '{$nombre}', '{$apellidos}', '{$id_cat_gen}', '{$correo}', '1'";
-            $query .= ")";
+        $query .= ") VALUES (";
+        $query .= " '{$nombre}','{$apellidos}','{$id_cat_gen}','{$correo}',{$cargo},{$id_area},'1','{$curp}'";
+        if ($puesto !== '') {
+            $query .= ", id_cat_puestos='{$puesto}'";
         }
+
 
         if ($db->query($query)) {
             //sucess
@@ -97,8 +98,8 @@ include_once('layouts/header.php'); ?>
                             <input type="text" class="form-control" name="apellidos" placeholder="Apellidos" required>
                         </div>
                     </div>
-                    <?php if ($nivel_user == 1) : ?>
-                        <div class="col-md-3">
+                    <?php if ($nivel_user <= 2) { ?>
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="level">Cargo</label>
                                 <select class="form-control" name="cargo">
@@ -109,8 +110,10 @@ include_once('layouts/header.php'); ?>
                                 </select>
                             </div>
                         </div>
-                    <?php endif; ?>
-                    <div class="col-md-3">
+                    <?php } else { ?>
+                        <input type="hidden" class="form-control" name="cargo" value="0">
+                    <?php } ?>
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label for="id_cat_gen">Género</label>
                             <select class="form-control" name="id_cat_gen">
@@ -131,6 +134,28 @@ include_once('layouts/header.php'); ?>
                         <div class="form-group">
                             <label for="correo">Correo</label>
                             <input type="text" class="form-control" name="correo" placeholder="ejemplo@correo.com" required>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="id_cat_puestos" class="control-label">Puesto</label>
+                            <select class="form-control" name="id_cat_puestos">
+                                <option value="">Escoge una opción</option>
+                                <?php foreach ($cat_puestos as $datos) : ?>
+                                    <option value="<?php echo $datos['id_cat_puestos']; ?>"><?php echo ucwords($datos['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="id_area">Área</label>
+                            <select class="form-control" name="id_area" required>
+                                <option value="0">Escoge una opción</option>
+                                <?php foreach ($areas as $area) : ?>
+                                    <option value="<?php echo $area['id_area']; ?>"><?php echo ucwords($area['nombre_area']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
                 </div>

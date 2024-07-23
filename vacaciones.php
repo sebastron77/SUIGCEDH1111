@@ -12,6 +12,7 @@ if (!$e_detalle) {
 }
 
 $user = current_user();
+$id_user = $user['id_user'];
 $nivel_user = $user['user_level'];
 $periodos = find_all('cat_periodos_vac');
 $vacaciones = find_all_vac($idP);
@@ -35,25 +36,45 @@ endif;
 
 <?php
 if (isset($_POST['vacaciones'])) {
-
+    //--------------------INSERT 1--------------------
     $id_cat_periodo_vac = $_POST['id_cat_periodo_vac'];
+    $derecho_vacas = $_POST['derecho_vacas'];
+    $observaciones = $_POST['observaciones'];
+    $ejercicio = $_POST['ejercicio'];
+
+    //--------------------INSERT 2--------------------
     $semana1_1 = $_POST['semana1_1'];
     $semana1_2 = $_POST['semana1_2'];
-    $semana2_1 = $_POST['semana2_1'];
-    $semana2_2 = $_POST['semana2_2'];
-    $observaciones = $_POST['observaciones'];
+
     date_default_timezone_set('America/Mexico_City');
     $fecha_creacion = date('Y-m-d');
 
-    $query2 = "INSERT INTO rel_vacaciones (";
-    $query2 .= "id_detalle_usuario, id_cat_periodo_vac, semana1_1, semana1_2, semana2_1, semana2_2, observaciones, fecha_creacion";
-    $query2 .= ") VALUES (";
-    $query2 .= " '{$idP}', '{$id_cat_periodo_vac}', '{$semana1_1}', '{$semana1_2}', '{$semana2_1}', '{$semana2_2}', '{$observaciones}', '{$fecha_creacion}'";
-    $query2 .= ")";
+    $dbh = new PDO('mysql:host=localhost; dbname=suigcedh7', 'suigcedh', '9DvkVuZ915H!');
+    // $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    if ($db->query($query2)) {
+    $query = "INSERT INTO rel_vacaciones (";
+    $query .= "id_detalle_usuario, id_cat_periodo_vac, derecho_vacas, observaciones, ejercicio, usuario_creador, fecha_creacion";
+    $query .= ") VALUES (";
+    $query .= " '{$idP}', '{$id_cat_periodo_vac}', '{$derecho_vacas}', '{$observaciones}', '{$ejercicio}', '{$id_user}', '{$fecha_creacion}'";
+    $query .= ")";
+
+    $dbh->exec($query);
+    $id_rv = $dbh->lastInsertId();
+
+    if ($derecho_vacas != 0) {
+        for ($i = 0; $i < sizeof($semana1_1); $i = $i + 1) {
+            $query2 = "INSERT INTO rel_periodos_vac (";
+            $query2 .= " id_rel_vacaciones, semana1_1, semana1_2, usuario_creador, fecha_creacion";
+            $query2 .= ") VALUES (";
+            $query2 .= " '{$id_rv}', '{$semana1_1[$i]}', '{$semana1_2[$i]}', '{$id_user}', '{$fecha_creacion}'";
+            $query2 .= ")";
+            $db->query($query2);
+            $q2 = 1;
+        }
+    }
+    if (($id_rv != 0) || ($q2 == 1)) {
         //sucess
-        $session->msg('s', "Periodo vacacional agregado con éxito! ");
+        $session->msg('s', "Periodo vacacional agregado con éxito. ");
         insertAccion($user['id_user'], '"' . $user['username'] . '" agregó periodo vacacional al usuario de id:' . (int)$idP, 1);
         redirect('detalles_usuario.php', false);
     } else {
@@ -65,6 +86,109 @@ if (isset($_POST['vacaciones'])) {
 ?>
 <?php include_once('layouts/header.php'); ?>
 
+<script type="text/javascript">
+    cont = 2;
+    $(document).ready(function() {
+        $("#addRow").click(function() {
+            var html = '';
+
+            html += '<div id="inputFormRow" style="margin-left: -2.5%">';
+            html += '   <div class="row">';
+            html += '       <div class="col-md-6">';
+            html += '           <span style="font-weight: bold; margin-left: 37%; margin-bottom: 1%;"> - Semana/Día ' + cont + ' -</span><br>';
+            html += '       </div>';
+            html += '   </div>';
+            html += '   <div class="col-md-3">';
+            html += '       <div class="form-group">';
+            html += '           <label for="semana1_1" style="margin-left: 35%;">Del día</label>';
+            html += '           <input type="date" class="form-control" name="semana1_1[]" style="width: 115%">';
+            html += '       </div>';
+            html += '   </div>';
+            html += '   <div class="col-md-3">';
+            html += '       <div class="form-group">';
+            html += '           <label for="semana1_2" style="margin-left: 35%;">Al día</label>';
+            html += '           <input type="date" class="form-control" name="semana1_2[]" style="width: 115%">';
+            html += '       </div>';
+            html += '   </div>';
+            html += '	<div class="col-md-2" style="margin-top: 2%">';
+            html += '	    <button type="button" class="btn btn-danger" id="removeRow" style="margin-top: 15%">';
+            html += '           <span class="material-symbols-outlined" style="color: white;">event_busy</span>';
+            html += '  	    </button>';
+            html += '	</div><br><br>';
+            html += '</div> ';
+            cont = cont + 1;
+            $('#newRow').append(html);
+        });
+        $(document).on('click', '#removeRow', function() {
+            $(this).closest('#inputFormRow').remove();
+        });
+    });
+</script>
+<style>
+    /* Estilos para el tooltip */
+    .info-button .tooltip {
+        visibility: hidden;
+        width: 220px;
+        background-color: rgb(94, 94, 94);
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        /* Posición del tooltip */
+        left: 50%;
+        margin-left: -110px;
+        opacity: 1.5;
+        transition: opacity 0.3s;
+    }
+
+    .info-button .tooltip::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        /* Flecha apuntando hacia arriba */
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    .info-button:hover .tooltip {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .round-button {
+        background-color: #7263f0;
+        color: white;
+        border: none;
+        padding: 10px;
+        /* Espacio interior */
+        text-align: center;
+        text-decoration: none;
+        font-size: 15px;
+        margin-left: 5px;
+        margin-top: -3px;
+        cursor: pointer;
+        border-radius: 100%;
+        width: 20px;
+        height: 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        vertical-align: middle;
+    }
+
+    /* Efecto al pasar el ratón */
+    .round-button:hover {
+        background-color: #5449B3;
+        /* Color de fondo al pasar el ratón */
+    }
+</style>
 <div class="row">
     <div class="col-md-12"> <?php echo display_msg($msg); ?> </div>
     <div class="col-md-5">
@@ -72,16 +196,16 @@ if (isset($_POST['vacaciones'])) {
             <div class="panel-heading">
                 <strong style="font-size: 16px; font-family: 'Montserrat', sans-serif">
                     <span class="glyphicon glyphicon-th"></span>
-                    VACACIONES DE: <?php echo upper_case(ucwords($e_detalle['nombre'] . " " . $e_detalle['apellidos'])); ?>
+                    PERIODO VACACIONAL DE: <?php echo upper_case(ucwords($e_detalle['nombre'] . " " . $e_detalle['apellidos'])); ?>
                 </strong>
             </div>
             <div class="panel-body">
                 <form method="post" action="vacaciones.php?id=<?php echo (int)$e_detalle['id_det_usuario']; ?>" enctype="multipart/form-data">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <div class="form-group">
-                                <label for="id_cat_periodo_vac">Periodo Vacacional</label>
-                                <select class="form-control" name="id_cat_periodo_vac" id="id_cat_periodo_vac">
+                                <label for="id_cat_periodo_vac">Periodo Vacacional <span style="color:red; font-weight:bold;">*</span></label>
+                                <select class="form-control" name="id_cat_periodo_vac" id="id_cat_periodo_vac" required>
                                     <option value="">Escoge una opción</option>
                                     <?php foreach ($periodos as $periodo) : ?>
                                         <option value="<?php echo $periodo['id_cat_periodo_vac']; ?>">
@@ -91,50 +215,71 @@ if (isset($_POST['vacaciones'])) {
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <span style="font-weight: bold; margin-left: 37%; margin-bottom: 1%;"> - Semana 1 -</span><br>
-                        </div>
-                        <div class="col-md-6">
-                            <span style="font-weight: bold; margin-left: 37%; margin-bottom: 1%;"> - Semana 2 -</span><br>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- <span style="font-weight: bold; margin-left: 18%; margin-bottom: 1%;"> - Semana 1 -</span><br> -->
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="semana1_1" style="margin-left: 35%;">Del día</label>
-                                <input type="date" class="form-control" name="semana1_1" id="semana1_1">
+                                <label for="ejercicio">Ejercicio <span style="color:red; font-weight:bold;">*</span></label>
+                                <select class="form-control" name="ejercicio" onchange="changueAnio(this.value)" required>
+                                    <option value="">Ejercicio (Año)</option>
+                                    <?php for ($i = 2022; $i <= (int) date("Y"); $i++) {
+                                        echo "<option value='" . $i . "'>" . $i . "</option>";
+                                    } ?>
+                                </select>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label for="semana1_2" style="margin-left: 35%;">Al día</label>
-                                <input type="date" class="form-control" name="semana1_2" id="semana1_2">
-                            </div>
-                        </div>
-                        <!-- <span style="font-weight: bold; margin-left: 18%; margin-bottom: 1%;"> - Semana 2 -</span><br> -->
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="semana2_1" style="margin-left: 35%;">Del día</label>
-                                <input type="date" class="form-control" name="semana2_1" id="semana2_1">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="semana2_2" style="margin-left: 35%;">Al día</label>
-                                <input type="date" class="form-control" name="semana2_2" id="semana2_2">
+                                <label for="derecho_vacas">¿Derecho a vacaciones? <span style="color:red; font-weight:bold;">*</span></label>
+                                <select class="form-control" name="derecho_vacas" id="derecho_vacas" required>
+                                    <option value="">Escoge una opción</option>
+                                    <option value="1">Sí</option>
+                                    <option value="0">No</option>
+                                </select>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <div class="form-group">
                                 <label for="observaciones">Observaciones</label>
                                 <textarea type="text" class="form-control" name="observaciones" id="observaciones" cols="30" rows="4"></textarea>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span style="font-weight: bold; margin-left: 37%; margin-bottom: 1%;"> - Semana/Día 1 -</span>
+                            <button class="info-button round-button">?
+                                <span class="tooltip" style="font-size: 15px">Las fechas pueden quedarse en blanco si el trabajador no tiene derecho a periodo vacacional.</span>
+                            </button><br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="semana1_1" style="margin-left: 35%;">Del día</label>
+                                <input type="date" class="form-control" name="semana1_1[]">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="semana1_2" style="margin-left: 35%;">Al día</label>
+                                <input type="date" class="form-control" name="semana1_2[]">
+                            </div>
+                        </div>
+                        <!-- <div class="row" style="margin-top: 1%; margin-bottom: 2%; margin-left: 1%;"> -->
+                        <div class="col-md-1" style="margin-top: 4%;">
+                            <button type="button" class="btn btn-success" id="addRow" name="addRow" style="width: 40px">
+                                <span class="material-symbols-outlined" style="color: white">
+                                    calendar_add_on
+                                </span>
+                            </button>
+                        </div>
+                        <div class="col-md-5" style="margin-top: 5%;">
+                            <p style="margin-bottom: 2%; margin-left: 0%; font-weight: bold; color: #157347;">Agregar otra fecha</p>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                    <div class="row" id="newRow" style="margin-top: 3%;">
                     </div>
                     <div class="form-group clearfix">
                         <a href="detalles_usuario.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
@@ -150,15 +295,15 @@ if (isset($_POST['vacaciones'])) {
         <table class="table table-bordered table-striped" style="width: 100%; float: left;" id="tblProductos">
             <thead class="thead-purple" style="margin-top: -50px;">
                 <tr style="height: 10px;">
-                    <th colspan="7" style="text-align:center; font-size: 14px;">Vacaciones <?php echo $diferencia ?></th>
+                    <th colspan="7" style="text-align:center; font-size: 14px;">Periodos Vacacionales</th>
                 </tr>
                 <tr style="height: 10px;">
-                    <th class="text-center" style="width: 8%; font-size: 13px;">Periodo</th>
-                    <th class="text-center" style="width: 6%; font-size: 13px;">Del (Semana 1)</th>
-                    <th class="text-center" style="width: 6%; font-size: 13px;">Al (Semana 1)</th>
-                    <th class="text-center" style="width: 6%; font-size: 13px;">Del (Semana 2)</th>
-                    <th class="text-center" style="width: 6%; font-size: 13px;">Al (Semana 2)</th>
-                    <th class="text-center" style="width: 14%; font-size: 13px;">Observaciones</th>
+                    <th class="text-center" style="width: 7%; font-size: 13px;">Periodo</th>
+                    <th class="text-center" style="width: 1%; font-size: 13px;">Ejercicio</th>
+                    <th class="text-center" style="width: 1%; font-size: 13px;">Derecho</th>
+                    <th class="text-center" style="width: 5%; font-size: 13px;">Del</th>
+                    <th class="text-center" style="width: 5%; font-size: 13px;">Al</th>
+                    <th class="text-center" style="width: 15%; font-size: 13px;">Observaciones</th>
                     <th class="text-center" style="width: 1%; font-size: 13px;">Acciones</th>
 
                 </tr>
@@ -166,14 +311,14 @@ if (isset($_POST['vacaciones'])) {
             <tbody>
                 <?php foreach ($vacaciones as $vac) : ?>
                     <tr>
-                        <td style="font-size: 15px;"><?php echo $vac['periodo']; ?></td>
-                        <td class="text-center" style="font-size: 15px;"><?php echo $newDate = date("d-m-Y", strtotime($vac['semana1_1'])); ?></td>
-                        <td class="text-center" style="font-size: 15px;"><?php echo $newDate = date("d-m-Y", strtotime($vac['semana1_2'])); ?></td>
-                        <td class="text-center" style="font-size: 15px;"><?php echo $newDate = date("d-m-Y", strtotime($vac['semana2_1'])); ?></td>
-                        <td class="text-center" style="font-size: 15px;"><?php echo $newDate = date("d-m-Y", strtotime($vac['semana2_2'])); ?></td>
+                        <td style="font-size: 15px;"><?php echo $vac['cat_periodo']; ?></td>
+                        <td class="text-center" style="font-size: 15px;"><?php echo $vac['ejercicio']; ?></td>
+                        <td class="text-center" style="font-size: 15px;"><?php echo $vac['derecho_vacas'] == '0' ? 'No' : 'Sí'; ?></td>
+                        <td class="text-center" style="font-size: 15px;"><?php echo $vac['derecho_vacas'] == '1' ? $newDate = date("d-m-Y", strtotime($vac['semana1_1'])) : '-'; ?></td>
+                        <td class="text-center" style="font-size: 15px;"><?php echo  $vac['derecho_vacas'] == '1' ? $newDate = date("d-m-Y", strtotime($vac['semana1_2'])) : '-'; ?></td>
                         <td class="text-center" style="font-size: 15px;"><?php echo $vac['observaciones']; ?></td>
                         <td style="font-size: 14px;" class="text-center">
-                            <a href="edit_vacaciones.php?id=<?php echo (int)$vac['id_rel_vacaciones']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip" style="height: 30px; width: 30px;"><span class="material-symbols-rounded" style="font-size: 22px; color: black; margin-top: -1.5px; margin-left: -5px;">edit</span>
+                            <a href="edit_vacaciones.php?idrv=<?php echo (int)$vac['id_rel_vacaciones']; ?>&idrpv=<?php echo (int)$vac['id_rel_periodo_vac']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip" style="height: 30px; width: 30px;"><span class="material-symbols-rounded" style="font-size: 22px; color: black; margin-top: -1.5px; margin-left: -5px;">edit</span>
                             </a>
                         </td>
                     </tr>
@@ -182,11 +327,5 @@ if (isset($_POST['vacaciones'])) {
         </table>
     </div>
 </div>
-<script>
-    num.oninput = function() {
-        if (this.value.length > 4) {
-            this.value = this.value.svace(0, 4);
-        }
-    }
-</script>
+
 <?php include_once('layouts/footer.php'); ?>

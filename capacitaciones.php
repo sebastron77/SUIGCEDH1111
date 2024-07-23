@@ -145,20 +145,20 @@ if (isset($_POST["export_data"])) {
 								<span>Lista de Capacitaciones de <?php echo $ejercicio ?> de <?php echo $solicitud['nombre_area'];?> </span>
 							</strong>
 					</div>
-					<div class="col-md-1" style="margin: 20px 40px 10px 0px;">
+					<div class="col-md-1" style="margin-left: 20px; margin-top: 20px;">
 						 <form action=" <?php echo $_SERVER["PHP_SELF"]; ?>?a=<?php echo $area?>&anio=<?php echo $ejercicio?>" method="post">
-                    <button style="float: right; margin-top: -20px" type="submit" id="export_data" name='export_data' value="Export to excel" class="btn btn-excel">Exportar a Excel</button>
+                    <button style="float: right; margin-top: -20px" type="submit" id="export_data" name='export_data' value="Export to excel" class="btn btn-excel">Exportar Excel</button>
                 </form>
 					</div>
-					<div class="col-md-1">
+					<div class="col-md-1"  style="margin-left: 90px;">
 						<?php if (( $nivel != 7) && ( $nivel != 53)):         ?>
                 <a href="add_capacitacion.php?a=<?php echo $area?>" style="margin-left: 10px" class="btn btn-info pull-right">Agregar capacitación</a>
                 <?php endif; ?>
 					</div>										
-					<div class="col-md-1">
+					<div class="col-md-1" style="margin-left: -20px;">
 						<div class="form-group" >
 							<select class="form-control" name="ejercicio" onchange="changueAnio(this.value,<?php echo $area?>)">
-								<option value="">Selecciona Ejercicio</option>																								
+								<option value="">Ejercicio</option>																								
 								<?php for ($i = 2022; $i <= (int) date("Y"); $i++) {
 								echo "<option value='".$i."'>".$i."</option>";
 								}?>																								

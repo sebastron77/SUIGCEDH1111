@@ -58,7 +58,7 @@ endif;
         <table class="datatable table table-bordered table-striped">
           <thead class="thead-purple">
             <tr style="height: 10px;"">
-              <th class="text-center" style=" width: 1%;">#</th>
+              <th class=" text-center" style=" width: 1%;">#</th>
               <th class="text-center" style="width: 5%;">Nombre(s)</th>
               <th class="text-center" style="width: 5%;">Apellidos</th>
               <th class="text-center" style="width: 10%;">Puesto</th>
@@ -79,7 +79,11 @@ endif;
                 <td><?php echo remove_junk(ucwords($a_detalle['nombre_area'])) ?></td>
                 <td class="text-center">
                   <?php if ($a_detalle['estatus_detalle'] === '1') : ?>
-                    <span class="label label-success"><?php echo "Activo"; ?></span>
+                    <?php if ($a_detalle['id_rel_licencia_personal'] > '0') : ?>
+                      <span class="label label-licencia"><?php echo "Permiso"; ?></span>
+                    <?php else : ?>
+                      <span class="label label-success"><?php echo "Activo"; ?></span>
+                    <?php endif; ?>
                   <?php else : ?>
                     <span class="label label-danger"><?php echo "Inactivo"; ?></span>
                   <?php endif; ?>

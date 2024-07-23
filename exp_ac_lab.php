@@ -45,79 +45,81 @@ endif;
 if (isset($_POST['exp_ac_lab'])) {
     // if (empty($e_detalle2['id_rel_cur_acad']) || empty($e_detalle3['id_rel_area_con'])) {
 
-        // if (empty($e_detalle2['id_rel_cur_acad'])) {
-            $comprobatorios = array();
+    // if (empty($e_detalle2['id_rel_cur_acad'])) {
+    $comprobatorios = array();
 
-            $carpeta = 'uploads/personal/expediente/' . $e_detalle['id_det_usuario'];
+    $carpeta = 'uploads/personal/expediente/' . $e_detalle['id_det_usuario'];
 
-            if (!is_dir($carpeta)) {
-                mkdir($carpeta, 0777, true);
+    if (!is_dir($carpeta)) {
+        mkdir($carpeta, 0777, true);
+    } else {
+        $move =  move_uploaded_file($temp, $carpeta . "/" . $name);
+    }
+
+
+    //se obtienen los nom,bre de archivos 		
+    foreach ($_FILES["archivo_comprobatorio"]['name'] as $key => $tmp_name) {
+        //condicional si el fuchero existe
+        if ($_FILES["archivo_comprobatorio"]["name"][$key]) {
+            // Nombres de archivos de temporales
+            $archivonombre = $_FILES["archivo_comprobatorio"]["name"][$key];
+            $fuente = $_FILES["archivo_comprobatorio"]["tmp_name"][$key];
+            array_push($comprobatorios, $archivonombre);
+
+            if (!file_exists($carpeta)) {
+                mkdir($carpeta, 0777) or die("Hubo un error al crear el directorio de almacenamiento");
+            }
+
+            $dir = opendir($carpeta);
+            $target_path = $carpeta . '/' . $archivonombre; //indicamos la ruta de destino de los archivos
+
+
+            if (move_uploaded_file($fuente, $target_path)) {
+                //echo "Los archivos $archivonombre se han cargado de forma correcta.<br>";
             } else {
-                $move =  move_uploaded_file($temp, $carpeta . "/" . $name);
+                //echo "Se ha producido un error, por favor revise los archivos e intentelo de nuevo.<br>";
             }
+            closedir($dir); //Cerramos la conexion con la carpeta destino
+        }
+    }
 
+    $estudios = $_POST['estudios'];
+    $institucion = $_POST['institucion'];
+    $grado = $_POST['grado'];
+    $cedula_profesional = $_POST['cedula_profesional'];
+    $observaciones = $_POST['observaciones'];
+    $texto = "";
 
-            //se obtienen los nom,bre de archivos 		
-            foreach ($_FILES["archivo_comprobatorio"]['name'] as $key => $tmp_name) {
-                //condicional si el fuchero existe
-                if ($_FILES["archivo_comprobatorio"]["name"][$key]) {
-                    // Nombres de archivos de temporales
-                    $archivonombre = $_FILES["archivo_comprobatorio"]["name"][$key];
-                    $fuente = $_FILES["archivo_comprobatorio"]["tmp_name"][$key];
-                    array_push($comprobatorios, $archivonombre);
+    for ($i = 0; $i < sizeof($estudios); $i = $i + 1) {
+        $query = "INSERT INTO rel_curriculum_academico (";
+        $query .= "id_rel_detalle_usuario,estudios,institucion,grado,cedula_profesional,observaciones,archivo_comprobatorio";
+        $query .= ") VALUES (";
+        $query .= " '{$idP}','{$estudios[$i]}','{$institucion[$i]}','{$grado[$i]}','{$cedula_profesional[$i]}','{$observaciones[$i]}','$colaboracion[$i]' ";
+        $query .= ")";
+        $texto = $texto . $query;
+        $db->query($query);
+        insertAccion($user['id_user'], '"' . $user['username'] . '" agregó expediente académico ' . $name . '(id:' . $idP . ').', 2);
+    }
+    // }
 
-                    if (!file_exists($carpeta)) {
-                        mkdir($carpeta, 0777) or die("Hubo un error al crear el directorio de almacenamiento");
-                    }
-
-                    $dir = opendir($carpeta);
-                    $target_path = $carpeta . '/' . $archivonombre; //indicamos la ruta de destino de los archivos
-
-
-                    if (move_uploaded_file($fuente, $target_path)) {
-                        //echo "Los archivos $archivonombre se han cargado de forma correcta.<br>";
-                    } else {
-                        //echo "Se ha producido un error, por favor revise los archivos e intentelo de nuevo.<br>";
-                    }
-                    closedir($dir); //Cerramos la conexion con la carpeta destino
-                }
-            }
-
-            $estudios = $_POST['estudios'];
-            $institucion = $_POST['institucion'];
-            $grado = $_POST['grado'];
-            $cedula_profesional = $_POST['cedula_profesional'];
-            $observaciones = $_POST['observaciones'];
-            $texto = "";
-
-            for ($i = 0; $i < sizeof($estudios); $i = $i + 1) {
-                $query = "INSERT INTO rel_curriculum_academico (";
-                $query .= "id_rel_detalle_usuario,estudios,institucion,grado,cedula_profesional,observaciones,archivo_comprobatorio";
-                $query .= ") VALUES (";
-                $query .= " '{$idP}','{$estudios[$i]}','{$institucion[$i]}','{$grado[$i]}','{$cedula_profesional[$i]}','{$observaciones[$i]}','$colaboracion[$i]' ";
-                $query .= ")";
-                $texto = $texto . $query;
-                $db->query($query);
-            }
-        // }
-
-        // if (empty($e_detalle3['id_rel_area_con'])) {
-            $tipo_area = $_POST['tipo_area'];
-            $nombre_carrera = $_POST['nombre_carrera'];
-            $especialidad = $_POST['especialidad'];
-            $texto2 = "";
-            for ($i = 0; $i < sizeof($tipo_area); $i = $i + 1) {
-                //query
-                $query2 = "INSERT INTO rel_area_conocimiento (";
-                $query2 .= "id_detalle_usuario,tipo_area,nombre_carrera,especialidad";
-                $query2 .= ") VALUES (";
-                $query2 .= " '{$idP}','{$tipo_area[$i]}','{$nombre_carrera[$i]}','{$especialidad[$i]}'";
-                $query2 .= ")";
-                $texto2 = $texto2 . $query2;
-                $db->query($query2);
-            }
-        // }
-        redirect('exp_ac_lab.php?id=' . $idP, false);
+    // if (empty($e_detalle3['id_rel_area_con'])) {
+    $tipo_area = $_POST['tipo_area'];
+    $nombre_carrera = $_POST['nombre_carrera'];
+    $especialidad = $_POST['especialidad'];
+    $texto2 = "";
+    for ($i = 0; $i < sizeof($tipo_area); $i = $i + 1) {
+        //query
+        $query2 = "INSERT INTO rel_area_conocimiento (";
+        $query2 .= "id_detalle_usuario,tipo_area,nombre_carrera,especialidad";
+        $query2 .= ") VALUES (";
+        $query2 .= " '{$idP}','{$tipo_area[$i]}','{$nombre_carrera[$i]}','{$especialidad[$i]}'";
+        $query2 .= ")";
+        $texto2 = $texto2 . $query2;
+        $db->query($query2);
+        insertAccion($user['id_user'], '"' . $user['username'] . '" agregó área del conocimiento ' . $name . '(id:' . $idP . ').', 2);
+    }
+    // }
+    redirect('exp_ac_lab.php?id=' . $idP, false);
     // }
 }
 ?>

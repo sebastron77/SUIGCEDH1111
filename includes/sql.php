@@ -750,10 +750,8 @@ function find_all_cargos2()
 /*----------------------------------------------*/
 function find_all_trabajadores()
 {
-  global $db;
-  $results = array();
   $sql = "SELECT d.id_det_usuario as detalleID, d.nombre, d.apellidos, d.correo, d.id_cargo, d.estatus_detalle, c.id_cargos, c.nombre_cargo, c.id_area, 
-                  a.id_area, a.nombre_area, p.descripcion as puesto ";
+                  a.id_area, a.nombre_area, p.descripcion as puesto, IF(id_rel_licencia_personal > 0, 'licencia', 'x') as licencia, IFNULL(id_rel_licencia_personal,0) as id_rel_licencia_personal ";
   $sql .= "FROM detalles_usuario d ";
   $sql .= "LEFT JOIN cargos c ";
   $sql .= "ON c.id_cargos = d.id_cargo ";
@@ -761,6 +759,7 @@ function find_all_trabajadores()
   $sql .= "ON a.id_area = c.id_area ";
   $sql .= "LEFT JOIN cat_puestos p ";
   $sql .= "ON p.id_cat_puestos = d.id_cat_puestos ";
+  $sql .= "LEFT JOIN (SELECT id_rel_licencia_personal,id_detalle_usuario FROM rel_licencias_personal WHERE terminado=0) rlp ON rlp.id_detalle_usuario = d.id_det_usuario ";
   $sql .= "ORDER BY d.nombre";
   $result = find_by_sql($sql);
   return $result;
@@ -7736,20 +7735,50 @@ function find_all_lic_vig()
 
 function find_all_vac($id)
 {
-  $sql = "SELECT rv.id_rel_vacaciones, rv.semana1_1, rv.semana1_2, rv.semana2_1, rv.semana2_2, rv.observaciones, cv.descripcion as periodo
-          FROM rel_vacaciones rv
-          LEFT JOIN cat_periodos_vac cv ON cv.id_cat_periodo_vac = rv.id_cat_periodo_vac
-          WHERE rv.id_detalle_usuario = '{$id}'
-          ORDER BY rv.fecha_creacion DESC";
+  $sql = "SELECT rv.id_rel_vacaciones, rv.id_cat_periodo_vac, rv.derecho_vacas, rv.observaciones, rv.ejercicio, pv.semana1_1, pv.semana1_2, 
+          pv.id_rel_periodo_vac, cpv.descripcion as cat_periodo
+          FROM rel_vacaciones rv 
+          LEFT JOIN rel_periodos_vac pv 
+          ON rv.id_rel_vacaciones = pv.id_rel_vacaciones
+          LEFT JOIN cat_periodos_vac cpv
+          ON rv.id_cat_periodo_vac = cpv.id_cat_periodo_vac
+          WHERE rv.id_detalle_usuario = '{$id}' 
+          ORDER BY rv.ejercicio DESC";
   $result = find_by_sql($sql);
   return $result;
 }
 
-function update_colum($table, $nombre_id, $id , $col)
+function update_colum($table, $nombre_id, $id, $col)
 {
   global $db;
   $sql = "UPDATE $table SET $col = NULL";
   $sql .= " WHERE $nombre_id =" . $db->escape($id);
   $db->query($sql);
   return ($db->affected_rows() >= 1) ? true : false;
+}
+
+// /----------------------------------------------------------/
+/* Funcion para encontrar si el trabajador tiene usuario    */
+// /----------------------------------------------------------/
+function search_userTrabajador($id)
+{
+  global $db;
+  $sql  = "SELECT id_user FROM users WHERE id_detalle_user='{$db->escape($id)}'  LIMIT 1;";
+  $result = $db->query($sql);
+  return ($db->fetch_assoc($result));
+}
+
+function detalle_gv_by_id($id)
+{
+  global $db;
+  $sql  = "SELECT * FROM rel_detalle_gv WHERE id_detalle_usuario='{$db->escape($id)}'";
+  $result = $db->query($sql);
+  return ($db->fetch_assoc($result));
+}
+
+function find_detalle_grupo_vuln($id)
+{
+  global $db;
+    $sql  = "SELECT id_cat_grupo_vuln FROM rel_detalle_gv WHERE id_detalle_usuario=" . $id . " ;";
+  return $db->query($sql);
 }
