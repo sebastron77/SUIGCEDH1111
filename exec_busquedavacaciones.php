@@ -1,4 +1,3 @@
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
 <?php header('Content-type: text/html; charset=utf-8');
 $page_title = 'Busqueja Vacaciones';
 require_once('includes/load.php');
@@ -19,8 +18,8 @@ if ($nivel == 5) {
 if ($nivel == 7) {
     page_require_level_exacto(7);
 }
-if ($nivel == 19) {
-    page_require_level_exacto(19);
+if ($nivel == 14) {
+    page_require_level_exacto(14);
 }
 
 if ($nivel > 2 && $nivel < 5) :
@@ -29,7 +28,7 @@ endif;
 if ($nivel > 5 && $nivel < 7) :
     redirect('home.php');
 endif;
-if ($nivel > 7 && $nivel < 19) :
+if ($nivel > 7 && $nivel < 14) :
     redirect('home.php');
 endif;
 
@@ -44,10 +43,10 @@ if (isset($_POST['export_data'])) {
 
         $conexion = mysqli_connect("localhost", "suigcedh", "9DvkVuZ915H!");
         mysqli_set_charset($conexion, "utf8");
-        mysqli_select_db($conexion, "suigcedh7");
+        mysqli_select_db($conexion, "suigcedh");
 
         $sql = "SELECT 
-                d.id_det_usuario, d.nombre, d.apellidos, pv.descripcion as periodo, rv.ejercicio, IF(rv.derecho_vacas = 0, 'No', 'Sí') as derecho, 
+                d.id_det_usuario, d.nombre, d.apellidos,  rv.ejercicio, pv.descripcion as periodo,IF(rv.derecho_vacas = 0, 'No', 'Sí') as derecho, 
                 rv.observaciones, rpv.semana1_1, rpv.semana1_2, a.nombre_area
 
                 FROM rel_vacaciones rv
@@ -101,9 +100,8 @@ if (isset($_POST['export_data'])) {
                 <p style="font-size: 17px; font-family: 'Montserrat'">
                     Lo sentimos, su búsqueda no generó ningún resultado ya que no hay coincidencias. Le pedimos por favor vuelva a intentarlo o verifique su información.
                 </p>
-
-                <a href="busquedavacaciones.php" class="btn btn-md btn-success" data-toggle="tooltip" title="ACEPTAR" style="font-size: 17px; font-family: 'Montserrat'">ACEPTAR</a>
-
+                
+<a href="busquedavacaciones.php" class="btn btn-md btn-success" data-toggle="tooltip" title="ACEPTAR">ACEPTAR </a>
 <?php
             }
             exit;
