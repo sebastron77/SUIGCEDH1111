@@ -49,7 +49,7 @@ endif;
         </strong>
         <?php if ($otro == 1 || $nivel_user == 1 || $nivel_user == 14) : ?>
           <a href="add_detalle_usuario.php" class="btn btn-info pull-right" style="margin-left:10px">Agregar trabajador</a>
-          <a href="ver_licencias_vigentes.php" class="btn btn-info pull-right" style="background: #5f03df; border-color: #5f03df;">Ver Licencias Vigentes</a>
+          <a href="ver_licencias_vigentes.php" class="btn btn-info pull-right" style="background: #370494; border-color: #370494;">Licencias Vigentes</a>
         <?php endif ?>
         <!-- <a href="ver_licencias" style="margin-left: 15%; margin-top: 10%">Ver información de licencias vigentes</a> -->
       </div>

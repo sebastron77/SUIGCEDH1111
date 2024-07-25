@@ -15,7 +15,7 @@ if ($session->isUserLoggedIn(true)) {
 			<!-- <img border="0" src="medios/LOGO-CEDH-H.png" width="150px" title="CEDH" alt="" style="margin:auto;display:block;" /> -->
 			<div class="row">
 				<div class="col-md-3">
-					<img border="0" src="medios/logoR3.png" width="70px" title="CEDH" alt="" style="margin:auto;display:block;" />
+					<img border="0" src="medios/moremorado.png" width="60px" title="CEDH" alt="" style="margin:auto;display:block;" />
 				</div>
 				<div class="col-md-6">
 					<div class="titleSis">SUIGCEDH</div>
@@ -23,8 +23,7 @@ if ($session->isUserLoggedIn(true)) {
 			</div>
 		</div>
 		<div class=" text-center">
-						<h1 style="margin-top:25px; font-weight: bold; color:#3A3D56;padding-top: 20px;">Iniciar Sesión</h1>
-						<!-- <p style="font-size:16px; color:#3A3D56;">Iniciar sesión </p> -->
+						<h1 style="margin-top:25px; font-weight: bold; color:#2a2b3b;padding-top: 20px;">Iniciar Sesión</h1>
 					</div>
 					<?php echo display_msg($msg); ?>
 					<form method="post" action="auth.php" class="clearfix">
